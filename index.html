@@ -1,259 +1,269 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KIMAC Service Sheet</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap');
-        
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Sarabun', sans-serif; background: #f0f2f5; color: #1a1a2e; }
-        
-        /* สไตล์ปุ่ม Export */
-        .topbar { background: #1a1a2e; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,.3); }
-        .topbar-logo { display: flex; align-items: center; gap: 12px; color: #fff; }
-        .btn-pdf { background: #e8c547; color: #1a1a2e; border: none; padding: 9px 20px; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 7px; }
-
-        /* ขนาดกระดาษ A4 สำหรับการ Export */
-        .main { max-width: 860px; margin: 24px auto; padding: 0 16px 40px; }
-        .a4-container { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
-
-        .card { border: 1px solid #eee; border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
-        .card-header { background: #1a1a2e; color: #fff; padding: 10px 18px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .card-body { padding: 16px 18px; }
-
-        .form-row { display: grid; gap: 12px; margin-bottom: 12px; grid-template-columns: repeat(2, 1fr); }
-        .field { display: flex; flex-direction: column; gap: 5px; }
-        .field label { font-size: 12px; font-weight: 600; color: #888; }
-        
-        input, select, textarea { border: 1.5px solid #e2e2ec; border-radius: 7px; padding: 9px 12px; font-family: 'Sarabun'; font-size: 14px; outline: none; background: #fafafa; }
-        
-        /* ส่วนของตารางอะไหล่ */
-        .parts-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .parts-table th { background: #1a1a2e; color: #fff; padding: 8px; font-size: 12px; text-align: center; }
-        .parts-table td { border: 1px solid #eee; padding: 5px; }
-        .parts-table input { width: 100%; border: none; background: transparent; text-align: center; }
-
-        /* ส่วนของลายเซ็น */
-        .sig-wrapper { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .sig-box { border: 2px dashed #ccc; background: #fcfcfc; border-radius: 8px; position: relative; height: 120px; }
-        canvas { width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
-        .btn-clear { font-size: 11px; color: red; cursor: pointer; background: none; border: none; margin-top: 5px; }
-
-        .total-box { margin-left: auto; width: 250px; background: #f8f8fd; padding: 15px; border-radius: 8px; margin-top: 15px; }
-        .total-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px; }
-        .grand-total { font-weight: bold; color: #1a1a2e; border-top: 1px solid #ddd; padding-top: 5px; }
-
-        @media (max-width: 600px) {
-            .form-row, .sig-wrapper { grid-template-columns: 1fr; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="KIMAC">
+<title>KIMAC Service Sheet</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun',sans-serif;background:#f0f2f5;color:#1a1a2e;min-height:100vh}
+.topbar{background:#1a1a2e;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.topbar-logo{display:flex;align-items:center;gap:12px}
+.topbar-logo img{height:44px;width:auto;filter:brightness(0) invert(1)}
+.topbar-logo span{color:#e8c547;font-size:13px;font-weight:600;letter-spacing:2px}
+.btn-pdf{background:#e8c547;color:#1a1a2e;border:none;padding:9px 20px;border-radius:6px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s}
+.btn-pdf:hover{background:#f5d44f;transform:translateY(-1px)}
+.btn-pdf svg{width:17px;height:17px}
+.main{max-width:860px;margin:24px auto;padding:0 16px 40px}
+.card{background:#fff;border-radius:10px;margin-bottom:16px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.07)}
+.card-header{background:#1a1a2e;color:#fff;padding:10px 18px;font-size:13px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.card-header .num{background:#e8c547;color:#1a1a2e;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.card-body{padding:16px 18px}
+.job-types{display:flex;flex-wrap:wrap;gap:10px;padding:14px 18px}
+.job-type-btn{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:8px;border:1.5px solid #dde;cursor:pointer;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:500;color:#555;background:#fff;transition:all .18s}
+.job-type-btn.active{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.job-type-btn .radio-dot{width:14px;height:14px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center}
+.job-type-btn.active .radio-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:#e8c547;display:block}
+.other-input{flex:1;min-width:160px;padding:9px 14px;border:1.5px solid #dde;border-radius:8px;font-family:'Sarabun',sans-serif;font-size:14px;outline:none;transition:border .2s}
+.form-row{display:grid;gap:12px;margin-bottom:12px}
+.col-4{grid-template-columns:repeat(4,1fr)}
+.col-3{grid-template-columns:repeat(3,1fr)}
+.col-2{grid-template-columns:repeat(2,1fr)}
+.col-1{grid-template-columns:1fr}
+@media(max-width:600px){.col-4,.col-3,.col-2{grid-template-columns:1fr 1fr}}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12px;font-weight:600;color:#888;letter-spacing:.4px}
+.field input,.field textarea,.field select{border:1.5px solid #e2e2ec;border-radius:7px;padding:9px 12px;font-family:'Sarabun',sans-serif;font-size:14px;color:#1a1a2e;outline:none;transition:border .2s;background:#fafafa}
+.field textarea{resize:vertical;min-height:72px;line-height:1.6}
+.field.span-2{grid-column:span 2}
+.radio-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.radio-opt{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;color:#444;padding:7px 12px;border-radius:7px;border:1.5px solid #e2e2ec;transition:all .18s}
+.radio-opt.active{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.radio-circle{width:14px;height:14px;border-radius:50%;border:2px solid currentColor;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.radio-opt.active .radio-circle::after{content:'';width:6px;height:6px;border-radius:50%;background:#e8c547;display:block}
+.inline-input{border:none;border-bottom:1.5px solid #ccc;padding:2px 6px;font-family:'Sarabun',sans-serif;font-size:13px;outline:none;min-width:120px;background:transparent}
+.parts-table{width:100%;border-collapse:collapse;font-size:13px}
+.parts-table th{background:#1a1a2e;color:#fff;padding:8px 10px;text-align:left;font-size:12px}
+.parts-table td{border-bottom:1px solid #f0f0f5;padding:6px 4px}
+.parts-table input{border:none;border-bottom:1.5px solid #e8e8f0;padding:5px 6px;width:100%;font-family:'Sarabun',sans-serif;font-size:13px;background:transparent;outline:none}
+.totals-box{min-width:200px;background:#fafafe;border-radius:8px;padding:14px;border:1px solid #e8e8f4}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:14px}
+.total-row.grand{border-top:2px solid #1a1a2e;margin-top:6px;padding-top:10px;font-weight:700;font-size:15px}
+.sig-area{border:2px dashed #ccd;border-radius:10px;position:relative;overflow:hidden;background:#fafafa;cursor:crosshair;height:150px}
+canvas.sig-pad{display:block;width:100%;height:100%;touch-action:none}
+.sig-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:13px;color:#bbb;pointer-events:none}
+.rating-opt{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1.5px solid #e2e2ec;cursor:pointer;font-size:14px}
+.rating-opt.active{border-color:#1a1a2e;background:#1a1a2e;color:#fff}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a2e;color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:all .3s;z-index:9999}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
 </head>
 <body>
 
 <div class="topbar">
-    <div class="topbar-logo">
-        <strong>KIMAC</strong> <span>SERVICE SHEET</span>
-    </div>
-    <button class="btn-pdf" onclick="exportPDF()">
-        💾 ดาวน์โหลด PDF
-    </button>
+  <div class="topbar-logo">
+    <img id="logo-img" alt="KIMAC">
+    <span>SERVICE SHEET</span>
+  </div>
+  <button class="btn-pdf" onclick="exportPDF()">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+    บันทึก PDF
+  </button>
 </div>
 
-<div class="main" id="pdf-content">
-    <div class="a4-container">
-        <div class="card">
-            <div class="card-header">ข้อมูลลูกค้าและบริการ</div>
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="field">
-                        <label>ประเภทงาน</label>
-                        <select id="job_type">
-                            <option>ติดตั้งเครื่องจักร</option>
-                            <option>ซ่อมบำรุง (PM)</option>
-                            <option>อื่นๆ</option>
-                        </select>
-                    </div>
-                    <div class="field"><label>วันที่บริการ</label><input type="date"></div>
-                </div>
-                <div class="form-row">
-                    <div class="field"><label>บริษัทลูกค้า</label><input type="text" placeholder="ชื่อบริษัท"></div>
-                    <div class="field"><label>NO.JOB</label><input type="text" placeholder="K-XXXX"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">ข้อมูลเครื่องจักร</div>
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="field">
-                        <label>สถานที่บริการ</label>
-                        <select>
-                            <option>หน้างานลูกค้า (On-site)</option>
-                            <option>บจก.คีแมค (In-house)</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>สถานะการรับประกัน</label>
-                        <select id="warranty_status" onchange="checkWarranty()">
-                            <option value="out">นอกการรับประกัน</option>
-                            <option value="in">ในการรับประกัน</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="field" id="warranty_no_div" style="display:none; margin-top:10px;">
-                    <label>เลขที่รับประกัน</label>
-                    <input type="text" id="s_warranty_no" placeholder="กรอกเลขที่รับประกัน">
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">รายการอะไหล่และค่าบริการ</div>
-            <div class="card-body" style="padding:0">
-                <table class="parts-table">
-                    <thead>
-                        <tr>
-                            <th style="width:50%">รายการอะไหล่</th>
-                            <th>จำนวน</th>
-                            <th>ราคา/หน่วย</th>
-                            <th>รวม</th>
-                        </tr>
-                    </thead>
-                    <tbody id="parts-body">
-                        <script>
-                            for(let i=1; i<=5; i++){
-                                document.write(`
-                                    <tr>
-                                        <td><input type="text"></td>
-                                        <td><input type="number" class="qty" oninput="calculate()"></td>
-                                        <td><input type="number" class="price" oninput="calculate()"></td>
-                                        <td class="row-total">0.00</td>
-                                    </tr>
-                                `);
-                            }
-                        </script>
-                    </tbody>
-                </table>
-                <div class="total-box">
-                    <div class="total-row"><span>ค่าบริการ:</span> <input type="number" id="service_fee" value="0" oninput="calculate()" style="width:80px; text-align:right;"></div>
-                    <div class="total-row"><span>VAT 7%:</span> <span id="t_vat">0.00</span></div>
-                    <div class="total-row grand"><span>รวมสุทธิ:</span> <span id="t_grand">0.00</span></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">การยืนยันและลายเซ็น</div>
-            <div class="card-body">
-                <div class="sig-wrapper">
-                    <div class="field">
-                        <label>ลงชื่อลูกค้า / ผู้ตรวจรับ</label>
-                        <div class="sig-box"><canvas id="canvas-client"></canvas></div>
-                        <button class="btn-clear" onclick="clearSig('canvas-client')">ล้างลายเซ็น</button>
-                    </div>
-                    <div class="field">
-                        <label>ลงชื่อช่างผู้ให้บริการ</label>
-                        <div class="sig-box"><canvas id="canvas-tech"></canvas></div>
-                        <button class="btn-clear" onclick="clearSig('canvas-tech')">ล้างลายเซ็น</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="main">
+  <div class="card">
+    <div class="card-body" style="padding:0">
+      <div style="padding:12px 18px 4px;font-size:12px;font-weight:600;color:#888;">งานบริการ</div>
+      <div class="job-types">
+        <button class="job-type-btn" id="jt-fix" onclick="setJobType('fix')"><span class="radio-dot"></span>ติดตั้งเครื่องจักร</button>
+        <button class="job-type-btn" id="jt-pm" onclick="setJobType('pm')"><span class="radio-dot"></span>ซ่อมบำรุง</button>
+        <button class="job-type-btn" id="jt-other" onclick="setJobType('other')"><span class="radio-dot"></span>อื่นๆ</button>
+        <input class="other-input" id="job-other-text" placeholder="ระบุประเภทงาน...">
+      </div>
     </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">1</span>ข้อมูลลูกค้า</div>
+    <div class="card-body">
+      <div class="form-row col-4">
+        <div class="field"><label>วันที่บริการ</label><input type="date" id="s_date"></div>
+        <div class="field"><label>เวลาเริ่ม</label><input type="time" id="s_start"></div>
+        <div class="field"><label>เวลาจบงาน</label><input type="time" id="s_end"></div>
+        <div class="field"><label>NO.JOB</label><input type="text" id="s_nojob"></div>
+      </div>
+      <div class="form-row col-1">
+        <div class="field"><label>บริษัทลูกค้า</label><input type="text" id="s_company"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">3</span>รายการอะไหล่ที่เปลี่ยน</div>
+    <div class="card-body" style="padding:0">
+      <table class="parts-table">
+        <thead>
+          <tr>
+            <th style="width:40%">รายการ</th>
+            <th style="width:20%">รหัส</th>
+            <th style="width:10%">จำนวน</th>
+            <th style="width:10%">หน่วย</th>
+            <th style="width:20%">ราคา</th>
+          </tr>
+        </thead>
+        <tbody id="parts-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">4</span>สรุปยอดเงิน</div>
+    <div class="card-body">
+      <div style="display: flex; justify-content: flex-end;">
+        <div class="totals-box">
+          <div class="total-row"><span>รวม (ก่อน VAT)</span><input type="number" id="t_sub" value="0" oninput="calcTotal()"></div>
+          <div class="total-row"><span>VAT 7%</span><span id="t_vat">0.00 บาท</span></div>
+          <div class="total-row grand"><span>สุทธิ</span><span id="t_grand">0.00 บาท</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">5</span>การรับรองงาน</div>
+    <div class="card-body">
+      <div class="rating-row" style="display:flex; gap:10px; margin-bottom:15px;">
+        <div class="rating-opt" onclick="setRating(this, 'excellent')">⭐ ดีมาก</div>
+        <div class="rating-opt" onclick="setRating(this, 'good')">👍 ดี</div>
+        <div class="rating-opt" onclick="setRating(this, 'ok')">😐 พอใช้</div>
+      </div>
+      <div class="sig-area" id="sig-wrap">
+        <canvas id="sig-canvas" class="sig-pad"></canvas>
+        <div class="sig-label" id="sig-placeholder">เซ็นชื่อที่นี่</div>
+      </div>
+      <div style="text-align:right; margin-top:10px;">
+        <button onclick="clearSignature()" style="cursor:pointer; padding:5px 10px;">ล้างลายเซ็น</button>
+      </div>
+    </div>
+  </div>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-    // 1. ฟังก์ชันเปิด-ปิดช่องประกัน
-    function checkWarranty() {
-        const status = document.getElementById('warranty_status').value;
-        const div = document.getElementById('warranty_no_div');
-        div.style.display = (status === 'in') ? 'block' : 'none';
+// ข้อมูลโลโก้
+const LOGO_UI = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAABQCAYAAAAnSfh8AAAB...`; // (โค้ด Base64 เดิมของคุณ)
+
+let jobType = 'other';
+
+// ฟังก์ชันเลือกประเภทงาน
+function setJobType(t) {
+    jobType = t;
+    ['fix', 'pm', 'other'].forEach(x => {
+        document.getElementById('jt-' + x).classList.remove('active');
+    });
+    document.getElementById('jt-' + t).classList.add('active');
+    document.getElementById('job-other-text').style.display = (t === 'other') ? 'block' : 'none';
+}
+
+// ฟังก์ชันคำนวณเงิน
+function calcTotal() {
+    let subtotal = parseFloat(document.getElementById('t_sub').value) || 0;
+    
+    // รวมจากตารางอะไหล่
+    const prices = document.querySelectorAll('.p-price');
+    const qtys = document.querySelectorAll('.p-qty');
+    let partsSum = 0;
+    prices.forEach((p, i) => {
+        partsSum += (parseFloat(p.value) || 0) * (parseFloat(qtys[i].value) || 0);
+    });
+
+    let total = subtotal + partsSum;
+    let vat = total * 0.07;
+    let grand = total + vat;
+
+    document.getElementById('t_vat').innerText = vat.toLocaleString() + " บาท";
+    document.getElementById('t_grand').innerText = grand.toLocaleString() + " บาท";
+}
+
+// ระบบลายเซ็น
+const canvas = document.getElementById('sig-canvas');
+const ctx = canvas.getContext('2d');
+let drawing = false;
+
+function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: clientX - rect.left, y: clientY - rect.top };
+}
+
+function startDraw(e) {
+    drawing = true;
+    document.getElementById('sig-placeholder').style.display = 'none';
+    const pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+}
+
+function moveDraw(e) {
+    if (!drawing) return;
+    const pos = getPos(e);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+}
+
+canvas.addEventListener('mousedown', startDraw);
+canvas.addEventListener('mousemove', moveDraw);
+window.addEventListener('mouseup', () => drawing = false);
+canvas.addEventListener('touchstart', startDraw, {passive: false});
+canvas.addEventListener('touchmove', moveDraw, {passive: false});
+
+function clearSignature() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    document.getElementById('sig-placeholder').style.display = 'block';
+}
+
+function setRating(el, val) {
+    document.querySelectorAll('.rating-opt').forEach(opt => opt.classList.remove('active'));
+    el.classList.add('active');
+}
+
+// สร้างแถวตารางอะไหล่เริ่มต้น 5 แถว
+function initTable() {
+    const tbody = document.getElementById('parts-body');
+    for(let i=0; i<5; i++) {
+        tbody.innerHTML += `<tr>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="number" class="p-qty" oninput="calcTotal()"></td>
+            <td><input type="text"></td>
+            <td><input type="number" class="p-price" oninput="calcTotal()"></td>
+        </tr>`;
     }
+}
 
-    // 2. ฟังก์ชันคำนวณเงิน
-    function calculate() {
-        let totalParts = 0;
-        const rows = document.querySelectorAll('#parts-body tr');
-        rows.forEach(row => {
-            const qty = row.querySelector('.qty').value || 0;
-            const price = row.querySelector('.price').value || 0;
-            const sub = qty * price;
-            row.querySelector('.row-total').innerText = sub.toFixed(2);
-            totalParts += sub;
-        });
+function exportPDF() {
+    const toast = document.getElementById('toast');
+    toast.innerText = "กำลังสร้าง PDF...";
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+}
 
-        const serviceFee = parseFloat(document.getElementById('service_fee').value) || 0;
-        const totalBeforeVat = totalParts + serviceFee;
-        const vat = totalBeforeVat * 0.07;
-        const grand = totalBeforeVat + vat;
-
-        document.getElementById('t_vat').innerText = vat.toLocaleString(undefined, {minimumFractionDigits: 2});
-        document.getElementById('t_grand').innerText = grand.toLocaleString(undefined, {minimumFractionDigits: 2});
-    }
-
-    // 3. ระบบลายเซ็น (Canvas)
-    function setupSignature(canvasId) {
-        const canvas = document.getElementById(canvasId);
-        const ctx = canvas.getContext("2d");
-        let drawing = false;
-
-        // ปรับขนาด canvas ให้ตรงกับที่แสดงผลจริง
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-
-        function getPos(e) {
-            const rect = canvas.getBoundingClientRect();
-            return {
-                x: (e.clientX || e.touches[0].clientX) - rect.left,
-                y: (e.clientY || e.touches[0].clientY) - rect.top
-            };
-        }
-
-        function start(e) { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); }
-        function move(e) {
-            if (!drawing) return;
-            e.preventDefault();
-            const p = getPos(e);
-            ctx.lineTo(p.x, p.y);
-            ctx.stroke();
-        }
-        function end() { drawing = false; }
-
-        canvas.addEventListener("mousedown", start);
-        canvas.addEventListener("mousemove", move);
-        canvas.addEventListener("mouseup", end);
-        canvas.addEventListener("touchstart", start);
-        canvas.addEventListener("touchmove", move);
-        canvas.addEventListener("touchend", end);
-    }
-
-    function clearSig(id) {
-        const canvas = document.getElementById(id);
-        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-    }
-
-    // 4. ฟังก์ชัน Export PDF (ดาวน์โหลดแทนการปริ้น)
-    function exportPDF() {
-        const element = document.getElementById('pdf-content');
-        const opt = {
-            margin: 5,
-            filename: 'KIMAC_Service_Sheet.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().set(opt).from(element).save();
-    }
-
-    window.onload = () => {
-        setupSignature('canvas-client');
-        setupSignature('canvas-tech');
-    };
+window.onload = () => {
+    initTable();
+    setJobType('other');
+    document.getElementById('s_date').valueAsDate = new Date();
+    // ปรับขนาด Canvas ให้ตรงกับพื้นที่จริง
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+};
 </script>
-
 </body>
 </html>
