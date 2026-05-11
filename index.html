@@ -1,215 +1,190 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KIMAC Service Sheet</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Sarabun',sans-serif;background:#f0f2f5;color:#1a1a2e;min-height:100vh}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIMAC Service Sheet - Digital Form</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --primary: #1a1a2e;
+            --accent: #e8c547;
+            --bg: #f4f7f6;
+            --white: #ffffff;
+        }
 
-/* ปรับแต่งหน้าตาสำหรับการพิมพ์ (Print Mode) */
-@media print {
-    .topbar, .btn-clear, .btn-pdf, .toast { display: none !important; }
-    body { background: white; }
-    .main { margin: 0; padding: 0; max-width: 100%; }
-    .card { box-shadow: none; border: 1px solid #eee; margin-bottom: 10px; }
-}
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Sarabun', sans-serif; background: var(--bg); color: #333; line-height: 1.6; }
 
-.topbar{background:#1a1a2e;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
-.topbar-logo span{color:#e8c547;font-size:13px;font-weight:600;letter-spacing:2px}
-.btn-pdf{background:#e8c547;color:#1a1a2e;border:none;padding:9px 20px;border-radius:6px;font-weight:700;cursor:pointer}
+        .container { max-width: 900px; margin: 20px auto; background: var(--white); padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-radius: 8px; }
 
-.main{max-width:860px;margin:24px auto;padding:0 16px 40px}
-.card{background:#fff;border-radius:10px;margin-bottom:16px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.07)}
-.card-header{background:#1a1a2e;color:#fff;padding:10px 18px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
-.card-header .num{background:#e8c547;color:#1a1a2e;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px}
-.card-body{padding:16px 18px}
+        /* Header Section */
+        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--primary); padding-bottom: 15px; margin-bottom: 20px; }
+        .logo-area img { width: 180px; }
+        .est-text { font-size: 12px; font-weight: 700; color: var(--primary); margin-top: 5px; }
+        .doc-title { text-align: right; }
+        .doc-title h1 { font-size: 28px; color: var(--primary); letter-spacing: 2px; }
+        .address-box { font-size: 11px; text-align: right; color: #666; margin-top: 5px; }
 
-.job-types{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:15px}
-.job-type-btn{padding:9px 16px;border-radius:8px;border:1.5px solid #dde;cursor:pointer;background:#fff;font-family:'Sarabun'}
-.job-type-btn.active{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+        /* Section Styling */
+        .section-title { background: var(--primary); color: var(--accent); padding: 5px 15px; font-size: 14px; font-weight: 600; margin: 20px 0 10px 0; border-radius: 4px; display: flex; justify-content: space-between; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 10px; }
+        .field { display: flex; flex-direction: column; }
+        label { font-size: 12px; font-weight: 600; color: #555; margin-bottom: 4px; }
+        input, textarea, select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-family: 'Sarabun'; font-size: 13px; }
+        
+        /* Table Styling */
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+        th { background: #f8f9fa; border: 1px solid #ddd; padding: 10px; text-align: center; }
+        td { border: 1px solid #ddd; padding: 5px; }
+        .col-num { width: 40px; text-align: center; }
 
-.form-row{display:grid;gap:12px;margin-bottom:12px}
-.col-4{grid-template-columns:repeat(4,1fr)}
-.col-1{grid-template-columns:1fr}
-@media(max-width:600px){.col-4{grid-template-columns:1fr 1fr}}
+        /* Signature Area */
+        .sig-container { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px; }
+        .sig-box { border: 1px dashed #ccc; height: 120px; border-radius: 8px; position: relative; background: #fafafa; }
+        .sig-label { text-align: center; font-size: 12px; margin-top: 5px; font-weight: 600; }
 
-.field{display:flex;flex-direction:column;gap:5px}
-.field label{font-size:12px;font-weight:600;color:#888}
-.field input, .field textarea{border:1.5px solid #e2e2ec;border-radius:7px;padding:9px 12px;font-family:'Sarabun'}
+        /* Floating Button */
+        .btn-float { position: fixed; bottom: 30px; right: 30px; background: var(--accent); color: var(--primary); padding: 15px 25px; border-radius: 50px; font-weight: 700; cursor: pointer; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.3s; }
+        .btn-float:hover { transform: scale(1.05); background: #f5d44f; }
 
-.parts-table{width:100%;border-collapse:collapse;font-size:13px}
-.parts-table th{background:#1a1a2e;color:#fff;padding:8px;text-align:left}
-.parts-table td{border-bottom:1px solid #f0f0f5;padding:6px 4px}
-.parts-table input{border:none;border-bottom:1px solid #ccc;width:100%;padding:4px}
-
-.totals-box{background:#fafafe;border-radius:8px;padding:14px;border:1px solid #e8e8f4;width:250px;margin-left:auto}
-.total-row{display:flex;justify-content:space-between;padding:5px 0}
-.grand{font-weight:700;border-top:2px solid #1a1a2e;margin-top:5px}
-
-.sig-area{border:2px dashed #ccd;border-radius:10px;height:150px;position:relative;background:#fafafa}
-canvas#sig-canvas{width:100%;height:100%;touch-action:none}
-.sig-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#bbb;pointer-events:none}
-</style>
+        @media print { .btn-float { display: none; } .container { box-shadow: none; margin: 0; padding: 20px; } }
+    </style>
 </head>
 <body>
 
-<div class="topbar">
-    <div class="topbar-logo"><span>KIMAC SERVICE SHEET</span></div>
-    <button class="btn-pdf" onclick="exportPDF()">บันทึก PDF / พิมพ์</button>
+<div class="container" id="serviceSheet">
+    <div class="header">
+        <div class="logo-area">
+            <img src="https://i.ibb.co/ZzN8y0Q/Kimac.jpg" alt="KIMAC Logo">
+            <div class="est-text">ESTABLISHED IN 1979 </div>
+        </div>
+        <div class="doc-title">
+            <h1>ใบงานบริการ (SERVICE SHEET)</h1>
+            <div class="address-box">
+                298 ถ.สามวา แขวงบางชัน เขตคลองสามวา กทม. 10510 [cite: 47]<br>
+                โทร. 02-9568291-2 | Line: @kimac [cite: 48]
+            </div>
+        </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns: 1fr 2fr;">
+        <div class="field">
+            <label>งานบริการ [cite: 3]</label>
+            <select id="jobType">
+                <option>ติดตั้งเครื่องจักร</option>
+                <option>ซ่อมบำรุง</option>
+                <option>อื่นๆ</option>
+            </select>
+        </div>
+        <div class="field">
+            <label>ระบุเพิ่มเติม (ถ้ามี)</label>
+            <input type="text" placeholder="ระบุงานอื่นๆ...">
+        </div>
+    </div>
+
+    <div class="section-title">ส่วนที่ 1 ข้อมูลลูกค้า [cite: 4]</div>
+    <div class="grid">
+        <div class="field"><label>วันที่บริการ [cite: 5]</label><input type="date"></div>
+        <div class="field"><label>เวลาเริ่ม</label><input type="time"></div>
+        <div class="field"><label>เวลาจบงาน</label><input type="time"></div>
+        <div class="field"><label>NO.JOB [cite: 6]</label><input type="text" placeholder="K-XXXX"></div>
+    </div>
+    <div class="grid">
+        <div class="field" style="grid-column: span 2;"><label>บริษัท / ห้างฯ / ร้าน ลูกค้า [cite: 7]</label><input type="text"></div>
+    </div>
+    <div class="grid">
+        <div class="field"><label>ติดต่อคุณ [cite: 8]</label><input type="text"></div>
+        <div class="field"><label>ตำแหน่ง [cite: 9]</label><input type="text"></div>
+        <div class="field"><label>เบอร์โทร [cite: 10]</label><input type="tel"></div>
+    </div>
+    <div class="field"><label>ที่อยู่ [cite: 11]</label><input type="text"></div>
+
+    <div class="section-title">ส่วนที่ 2 ข้อมูลเครื่องจักร [cite: 12]</div>
+    <div class="grid">
+        <div class="field"><label>สถานที่บริการ [cite: 13]</label>
+            <select><option>ลูกค้า</option><option>บจก.คีแมค</option></select>
+        </div>
+        <div class="field"><label>สถานะการรับประกัน [cite: 14]</label>
+            <select><option>ในรับประกัน</option><option>นอกรับประกัน</option></select>
+        </div>
+        <div class="field"><label>เลขที่ใบรับประกัน</label><input type="text"></div>
+    </div>
+    <div class="grid">
+        <div class="field"><label>เครื่อง [cite: 15]</label><input type="text"></div>
+        <div class="field"><label>รุ่น [cite: 16]</label><input type="text"></div>
+        <div class="field"><label>S/N [cite: 17]</label><input type="text"></div>
+        <div class="field"><label>วันที่ซื้อ [cite: 18]</label><input type="date"></div>
+    </div>
+    <div class="field"><label>รายละเอียด / อาการ [cite: 19]</label><textarea rows="2"></textarea></div>
+
+    <div class="section-title">ส่วนที่ 3 รายการอะไหล่ที่เปลี่ยน [cite: 22]</div>
+    <table>
+        <thead>
+            <tr>
+                <th class="col-num">ที่</th>
+                <th>รายการอะไหล่ [cite: 23]</th>
+                <th>รหัส [cite: 24]</th>
+                <th>จำนวน [cite: 25]</th>
+                <th>หน่วย [cite: 26]</th>
+                <th>ราคา [cite: 27]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="col-num">1</td><td><input type="text"></td><td><input type="text"></td><td><input type="number"></td><td><input type="text"></td><td><input type="number"></td></tr>
+            <tr><td class="col-num">2</td><td><input type="text"></td><td><input type="text"></td><td><input type="number"></td><td><input type="text"></td><td><input type="number"></td></tr>
+            <tr><td class="col-num">3</td><td><input type="text"></td><td><input type="text"></td><td><input type="number"></td><td><input type="text"></td><td><input type="number"></td></tr>
+            <tr><td class="col-num">4</td><td><input type="text"></td><td><input type="text"></td><td><input type="number"></td><td><input type="text"></td><td><input type="number"></td></tr>
+            <tr><td class="col-num">5</td><td><input type="text"></td><td><input type="text"></td><td><input type="number"></td><td><input type="text"></td><td><input type="number"></td></tr>
+        </tbody>
+    </table>
+
+    <div class="section-title">ส่วนที่ 4 ค่าบริการ [cite: 33]</div>
+    <div class="grid">
+        <div class="field"><label>เขตบริการ [cite: 34]</label>
+            <select><option>ฟรี</option><option>กรุงเทพฯ/ปริมณฑล</option><option>ต่างจังหวัด</option></select>
+        </div>
+        <div class="field"><label>จังหวัด</label><input type="text"></div>
+        <div class="field"><label>รวมยอดสุทธิ [cite: 37]</label><input type="number" placeholder="0.00" style="font-weight:bold; color:red;"></div>
+    </div>
+
+    <div class="section-title">ส่วนที่ 5 ความพึงพอใจและลงชื่อ [cite: 38]</div>
+    <div class="grid" style="align-items: center;">
+        <div class="field">
+            <label>คะแนนบริการ [cite: 41, 43]</label>
+            <select>
+                <option>ดีมาก</option>
+                <option>ดี</option>
+                <option>พอใช้</option>
+                <option>ปรับปรุง</option>
+            </select>
+        </div>
+        <div class="field" style="grid-column: span 2;">
+            <label>ข้อเสนอแนะ และติชม [cite: 49]</label>
+            <input type="text" placeholder="...">
+        </div>
+    </div>
+
+    <div class="sig-container">
+        <div>
+            <div class="sig-box"></div>
+            <div class="sig-label">ลงชื่อช่างผู้ให้บริการ [cite: 37]</div>
+        </div>
+        <div>
+            <div class="sig-box"></div>
+            <div class="sig-label">ลงชื่อลูกค้า / ผู้ตรวจรับ [cite: 39]</div>
+            <div class="grid" style="margin-top:5px;">
+                <input type="text" placeholder="แผนก [cite: 40]">
+                <input type="date">
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="main">
-    <div class="card">
-        <div class="card-body">
-            <div class="job-types">
-                <button class="job-type-btn" id="jt-fix" onclick="setJobType('fix')">ติดตั้งเครื่องจักร</button>
-                <button class="job-type-btn" id="jt-pm" onclick="setJobType('pm')">ซ่อมบำรุง</button>
-                <button class="job-type-btn active" id="jt-other" onclick="setJobType('other')">อื่นๆ</button>
-                <input type="text" id="job-other-text" placeholder="ระบุประเภทงาน..." style="padding:8px; border:1px solid #ccc; border-radius:5px;">
-            </div>
-        </div>
-    </div>
+<button class="btn-float" onclick="window.print()">พิมพ์ใบงาน (PDF)</button>
 
-    <div class="card">
-        <div class="card-header"><span class="num">1</span>ข้อมูลบริการ</div>
-        <div class="card-body">
-            <div class="form-row col-4">
-                <div class="field"><label>วันที่</label><input type="date" id="s_date"></div>
-                <div class="field"><label>เวลาเริ่ม</label><input type="time"></div>
-                <div class="field"><label>เวลาจบ</label><input type="time"></div>
-                <div class="field"><label>NO.JOB</label><input type="text" placeholder="K-0001"></div>
-            </div>
-            <div class="form-row col-1">
-                <div class="field"><label>ชื่อลูกค้า / บริษัท</label><input type="text" placeholder="ระบุชื่อลูกค้า"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header"><span class="num">3</span>รายการอะไหล่</div>
-        <div class="card-body" style="padding:0">
-            <table class="parts-table">
-                <thead>
-                    <tr><th>รายการ</th><th style="width:15%">จำนวน</th><th style="width:25%">ราคา/หน่วย</th></tr>
-                </thead>
-                <tbody id="parts-body"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-body">
-            <div class="totals-box">
-                <div class="total-row"><span>ค่าบริการ</span><input type="number" id="t_sub" value="0" oninput="calcTotal()" style="width:80px; text-align:right;"></div>
-                <div class="total-row"><span>VAT 7%</span><span id="t_vat">0.00</span></div>
-                <div class="total-row grand"><span>สุทธิ</span><span id="t_grand">0.00</span></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header"><span class="num">5</span>ยืนยันการรับงาน</div>
-        <div class="card-body">
-            <div class="sig-area">
-                <canvas id="sig-canvas"></canvas>
-                <div class="sig-label" id="sig-placeholder">ใช้นิ้วเซ็นชื่อที่นี่</div>
-            </div>
-            <button onclick="clearSignature()" style="margin-top:10px; padding:5px 10px; cursor:pointer;">ล้างลายเซ็น</button>
-        </div>
-    </div>
-</div>
-
-<script>
-// 1. จัดการประเภทงาน
-function setJobType(t) {
-    ['fix', 'pm', 'other'].forEach(x => document.getElementById('jt-'+x).classList.remove('active'));
-    document.getElementById('jt-'+t).classList.add('active');
-    document.getElementById('job-other-text').style.display = (t === 'other') ? 'inline-block' : 'none';
-}
-
-// 2. คำนวณเงินอัตโนมัติ
-function calcTotal() {
-    let serviceFee = parseFloat(document.getElementById('t_sub').value) || 0;
-    let partsSum = 0;
-    document.querySelectorAll('.p-row').forEach(row => {
-        let q = parseFloat(row.querySelector('.p-qty').value) || 0;
-        let p = parseFloat(row.querySelector('.p-price').value) || 0;
-        partsSum += (q * p);
-    });
-    
-    let total = serviceFee + partsSum;
-    let vat = total * 0.07;
-    let grand = total + vat;
-
-    document.getElementById('t_vat').innerText = vat.toLocaleString(undefined, {minimumFractionDigits:2});
-    document.getElementById('t_grand').innerText = grand.toLocaleString(undefined, {minimumFractionDigits:2});
-}
-
-// 3. สร้างตารางอะไหล่ (5 แถว)
-const tbody = document.getElementById('parts-body');
-for(let i=0; i<5; i++) {
-    tbody.innerHTML += `
-        <tr class="p-row">
-            <td><input type="text"></td>
-            <td><input type="number" class="p-qty" oninput="calcTotal()"></td>
-            <td><input type="number" class="p-price" oninput="calcTotal()"></td>
-        </tr>`;
-}
-
-// 4. ระบบลายเซ็น
-const canvas = document.getElementById('sig-canvas');
-const ctx = canvas.getContext('2d');
-let drawing = false;
-
-function getPos(e) {
-    const rect = canvas.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    return { x: clientX - rect.left, y: clientY - rect.top };
-}
-
-function startDrawing(e) {
-    drawing = true;
-    document.getElementById('sig-placeholder').style.display = 'none';
-    const pos = getPos(e);
-    ctx.beginPath();
-    ctx.moveTo(pos.x, pos.y);
-}
-
-function draw(e) {
-    if (!drawing) return;
-    const pos = getPos(e);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.stroke();
-    e.preventDefault();
-}
-
-canvas.addEventListener('mousedown', startDrawing);
-canvas.addEventListener('mousemove', draw);
-window.addEventListener('mouseup', () => drawing = false);
-canvas.addEventListener('touchstart', startDrawing, {passive: false});
-canvas.addEventListener('touchmove', draw, {passive: false});
-
-function clearSignature() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    document.getElementById('sig-placeholder').style.display = 'block';
-}
-
-// 5. บันทึก PDF (ใช้วิธีพิมพ์ซึ่งแม่นยำที่สุดบนมือถือ)
-function exportPDF() {
-    window.print();
-}
-
-window.onload = () => {
-    document.getElementById('s_date').valueAsDate = new Date();
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "#1a1a2e";
-};
-</script>
 </body>
 </html>
