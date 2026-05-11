@@ -3,329 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KIMAC Service Sheet</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+    <title>KIMAC Service Sheet - A4 Version</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
-            --primary-color: #f0f4f8;
-            --accent-color: #003366;
-            --border-color: #d1d9e6;
-            --text-color: #333;
+            --primary: #4a90e2;
+            --text: #333;
+            --border: #ccc;
+            --bg-light: #f9f9f9;
         }
-
-        body {
-            font-family: 'Sarabun', sans-serif;
-            background-color: #525659;
-            margin: 0;
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
+        body { 
+            font-family: 'Sarabun', sans-serif; 
+            background: #525659; 
+            margin: 0; 
             padding: 20px;
-            color: var(--text-color);
+            color: var(--text);
         }
-
-        /* ตั้งค่าหน้ากระดาษ A4 */
-        .a4-container {
+        .a4-page {
             width: 210mm;
             min-height: 297mm;
             padding: 15mm;
-            margin: auto;
+            margin: 0 auto;
             background: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            box-sizing: border-box;
-            position: relative;
         }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 20px; }
+        .logo-area img { max-height: 50px; }
+        .title { text-align: center; font-size: 24px; font-weight: 700; color: var(--primary); margin: 10px 0; }
+        
+        .section-title { 
+            background: var(--bg-light); 
+            padding: 8px 12px; 
+            font-weight: 600; 
+            border-left: 4px solid var(--primary); 
+            margin: 15px 0 10px;
+            font-size: 14px;
         }
+        .grid { display: grid; gap: 15px; margin-bottom: 15px; grid-template-columns: repeat(2, 1fr); }
+        .field label { display: block; font-size: 12px; font-weight: 600; color: #666; margin-bottom: 4px; }
+        .field input, .field select { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-family: 'Sarabun'; font-size: 13px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background: var(--bg-light); border: 1px solid var(--border); padding: 8px; font-size: 13px; }
+        td { border: 1px solid var(--border); padding: 5px; }
+        td input { width: 100%; border: none; padding: 5px; font-family: 'Sarabun'; outline: none; }
 
-        .logo img {
-            max-height: 60px;
-        }
+        .summary { width: 250px; margin-left: auto; margin-top: 20px; }
+        .sum-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 14px; }
+        .grand-total { color: var(--primary); font-weight: 700; border-top: 1px solid var(--border); padding-top: 5px; margin-top: 5px; }
 
-        .company-info {
-            text-align: right;
-            font-size: 12px;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 24px;
-            color: var(--accent-color);
-            margin: 10px 0;
-        }
-
-        .section {
-            margin-bottom: 15px;
-        }
-
-        .section-title {
-            background-color: var(--primary-color);
-            padding: 5px 10px;
-            font-weight: bold;
-            border-left: 5px solid var(--accent-color);
-            margin-bottom: 10px;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 5px;
-        }
-
-        label {
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        input, select, textarea {
-            padding: 6px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-family: 'Sarabun', sans-serif;
-            font-size: 13px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th, td {
-            border: 1px solid var(--border-color);
-            padding: 8px;
-            text-align: center;
-            font-size: 13px;
-        }
-
-        th {
-            background-color: var(--primary-color);
-        }
-
-        .summary-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 15px;
-        }
-
-        .summary-table {
-            width: 250px;
-        }
-
-        .summary-table td {
-            text-align: right;
-            padding: 5px;
-        }
-
-        .download-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            z-index: 1000;
-        }
-
-        .download-btn:hover { background-color: #218838; }
-
-        @media print {
-            .download-btn { display: none; }
-            body { background: none; padding: 0; }
-            .a4-container { box-shadow: none; margin: 0; }
-        }
+        .sig-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px; text-align: center; }
+        .sig-box { border: 1px dashed var(--border); height: 100px; position: relative; background: #fff; cursor: crosshair; }
+        canvas { width: 100%; height: 100%; touch-action: none; }
+        
+        .btn-download { position: fixed; top: 20px; right: 20px; background: #28a745; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; font-weight: 700; z-index: 100; }
+        @media print { .btn-download { display: none; } }
     </style>
 </head>
 <body>
 
-    <button class="download-btn" onclick="downloadPDF()">ดาวน์โหลด PDF</button>
+<button class="btn-download" onclick="downloadPDF()">ดาวน์โหลด PDF (Download)</button>
 
-    <div class="a4-container" id="content">
-        <div class="header">
-            <div class="logo">
-                <img src="https://i.imgur.com/your_logo_here.jpg" alt="KIMAC Logo">
-            </div>
-            <div class="company-info">
-                <strong>บริษัท คีแมค จำกัด</strong><br>
-                298 ถ.สามวา แขวงบางชัน เขตคลองสามวา กทม. 10510<br>
-                โทร. 02-9568291-2 | Line: @kimac
-            </div>
-        </div>
-
-        <h1>SERVICE SHEET</h1>
-
-        <div class="section">
-            <div class="section-title">ส่วนที่ 1 ข้อมูลลูกค้า</div>
-            <div class="grid-container">
-                <div class="input-group">
-                    <label>ประเภทงานบริการ</label>
-                    <select>
-                        <option>ติดตั้งเครื่องจักร</option>
-                        <option>ซ่อมบำรุง</option>
-                        <option>อื่นๆ</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>NO.JOB</label>
-                    <input type="text" placeholder="ระบุเลขที่งาน">
-                </div>
-                <div class="input-group">
-                    <label>วันที่บริการ</label>
-                    <input type="date">
-                </div>
-                <div class="input-group">
-                    <label>ชื่อลูกค้า / บริษัท</label>
-                    <input type="text">
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">ส่วนที่ 2 ข้อมูลเครื่องจักร</div>
-            <div class="grid-container">
-                <div class="input-group">
-                    <label>สถานที่บริการ</label>
-                    <select>
-                        <option>หน้างานลูกค้า</option>
-                        <option>บจก.คีแมค</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>สถานะการรับประกัน</label>
-                    <select id="warranty-status" onchange="toggleWarranty()">
-                        <option value="out">นอกรับประกัน</option>
-                        <option value="in">ในรับประกัน</option>
-                    </select>
-                </div>
-                <div id="warranty-field" class="input-group" style="display:none; grid-column: span 2;">
-                    <label>หมายเลขประกัน</label>
-                    <input type="text" placeholder="กรอกเลขที่รับประกัน">
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">ส่วนที่ 3 รายการอะไหล่ที่เปลี่ยน</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ลำดับ</th>
-                        <th>รายการอะไหล่</th>
-                        <th>จำนวน</th>
-                        <th>หน่วย</th>
-                        <th>ราคา/หน่วย</th>
-                        <th>รวม</th>
-                    </tr>
-                </thead>
-                <tbody id="parts-table">
-                    <script>
-                        for(let i=1; i<=5; i++){
-                            document.write(`
-                                <tr>
-                                    <td>${i}</td>
-                                    <td><input type="text" style="width:95%; border:none;"></td>
-                                    <td><input type="number" class="qty" style="width:50px;" oninput="calculate()"></td>
-                                    <td><input type="text" style="width:50px;"></td>
-                                    <td><input type="number" class="price" style="width:80px;" oninput="calculate()"></td>
-                                    <td class="row-total">0.00</td>
-                                </tr>
-                            `);
-                        }
-                    </script>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="summary-container">
-            <table class="summary-table">
-                <tr>
-                    <td>รวมยอดอะไหล่:</td>
-                    <td id="sub-total">0.00</td>
-                </tr>
-                <tr>
-                    <td>ค่าบริการ:</td>
-                    <td><input type="number" id="service-charge" style="width:80px;" oninput="calculate()"></td>
-                </tr>
-                <tr>
-                    <td>VAT 7%:</td>
-                    <td id="vat-amount">0.00</td>
-                </tr>
-                <tr style="font-weight:bold; color:var(--accent-color);">
-                    <td>รวมยอดสุทธิ:</td>
-                    <td id="grand-total">0.00</td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="section" style="margin-top: 30px;">
-            <div class="grid-container">
-                <div style="text-align:center;">
-                    <p>...........................................................</p>
-                    <p>ลงชื่อช่างผู้ให้บริการ</p>
-                </div>
-                <div style="text-align:center;">
-                    <p>...........................................................</p>
-                    <p>ลงชื่อลูกค้า/ผู้ตรวจรับ</p>
-                </div>
-            </div>
+<div class="a4-page" id="service-sheet">
+    <div class="header">
+        <div class="logo-area"><img src="https://i.imgur.com/your-logo.png" alt="KIMAC"></div>
+        <div style="text-align: right; font-size: 11px;">
+            <strong>บริษัท คีแมค จำกัด</strong><br>298 ถ.สามวา แขวงบางชัน กทม. 10510<br>โทร. 02-9568291-2
         </div>
     </div>
 
-    <script>
-        function toggleWarranty() {
-            const status = document.getElementById('warranty-status').value;
-            document.getElementById('warranty-field').style.display = status === 'in' ? 'flex' : 'none';
-        }
+    <div class="title">SERVICE SHEET</div>
 
-        function calculate() {
-            const rows = document.querySelectorAll('#parts-table tr');
-            let partTotal = 0;
+    <div class="section-title">ข้อมูลลูกค้าและบริการ</div>
+    <div class="grid">
+        <div class="field"><label>ประเภทงาน</label>
+            <select>
+                <option>ติดตั้งเครื่องจักร</option>
+                <option>ซ่อมบำรุง (PM)</option>
+                <option>งานซ่อม (Repair)</option>
+                <option>อื่นๆ</option>
+            </select>
+        </div>
+        <div class="field"><label>เลขที่งาน (Job No.)</label><input type="text"></div>
+        <div class="field"><label>สถานที่บริการ</label>
+            <select>
+                <option>หน้างานลูกค้า (On-site)</option>
+                <option>บจก.คีแมค (In-house)</option>
+            </select>
+        </div>
+        <div class="field"><label>สถานะการรับประกัน</label>
+            <select id="warranty-status" onchange="toggleWarranty()">
+                <option value="out">นอกการรับประกัน</option>
+                <option value="in">ในการรับประกัน</option>
+            </select>
+        </div>
+        <div class="field" id="warranty-input" style="display: none; grid-column: span 2;">
+            <label>หมายเลขประกัน (Warranty No.)</label><input type="text">
+        </div>
+    </div>
 
-            rows.forEach(row => {
-                const qty = row.querySelector('.qty').value || 0;
-                const price = row.querySelector('.price').value || 0;
-                const total = qty * price;
-                row.querySelector('.row-total').innerText = total.toFixed(2);
-                partTotal += total;
-            });
+    <div class="section-title">รายการอะไหล่ที่เปลี่ยน</div>
+    <table>
+        <thead>
+            <tr><th style="width: 50%;">รายการ</th><th style="width: 15%;">จำนวน</th><th style="width: 35%;">ราคา/หน่วย</th></tr>
+        </thead>
+        <tbody id="parts-table">
+            <script>
+                for(let i=0; i<5; i++) {
+                    document.write(`<tr class="p-row"><td><input type="text"></td><td><input type="number" class="p-qty" oninput="calculate()"></td><td><input type="number" class="p-price" oninput="calculate()"></td></tr>`);
+                }
+            </script>
+        </tbody>
+    </table>
 
-            const serviceCharge = parseFloat(document.getElementById('service-charge').value) || 0;
-            const subTotal = partTotal + serviceCharge;
-            const vat = subTotal * 0.07;
-            const grandTotal = subTotal + vat;
+    <div class="summary">
+        <div class="sum-row"><span>ค่าบริการ</span><input type="number" id="service-fee" value="0" oninput="calculate()" style="width: 80px; text-align: right; border: 1px solid #eee;"></div>
+        <div class="sum-row"><span>VAT 7%</span><span id="vat-amt">0.00</span></div>
+        <div class="sum-row grand-total"><span>ยอดสุทธิ</span><span id="grand-total">0.00</span></div>
+    </div>
 
-            document.getElementById('sub-total').innerText = partTotal.toFixed(2);
-            document.getElementById('vat-amount').innerText = vat.toFixed(2);
-            document.getElementById('grand-total').innerText = grandTotal.toFixed(2);
-        }
+    <div class="section-title">การรับรองงาน</div>
+    <div class="sig-container">
+        <div>
+            <label style="font-size: 12px;">ลงชื่อลูกค้า / ผู้ตรวจรับ</label>
+            <div class="sig-box"><canvas id="sig-client"></canvas></div>
+            <button onclick="clearSig('sig-client')" style="font-size: 10px; margin-top: 5px;">ล้าง</button>
+        </div>
+        <div>
+            <label style="font-size: 12px;">ลงชื่อช่างบริการ</label>
+            <div class="sig-box"><canvas id="sig-tech"></canvas></div>
+            <button onclick="clearSig('sig-tech')" style="font-size: 10px; margin-top: 5px;">ล้าง</button>
+        </div>
+    </div>
+</div>
 
-        function downloadPDF() {
-            const element = document.getElementById('content');
-            const opt = {
-                margin: 0,
-                filename: 'KIMAC_Service_Sheet.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            // ใช้งาน html2pdf เพื่อดาวน์โหลดแทนการสั่งพิมพ์
-            html2pdf().set(opt).from(element).save();
-        }
-    </script>
+<script>
+function toggleWarranty() {
+    const status = document.getElementById('warranty-status').value;
+    document.getElementById('warranty-input').style.display = (status === 'in') ? 'block' : 'none';
+}
+
+function calculate() {
+    let partsSum = 0;
+    document.querySelectorAll('.p-row').forEach(row => {
+        const q = parseFloat(row.querySelector('.p-qty').value) || 0;
+        const p = parseFloat(row.querySelector('.p-price').value) || 0;
+        partsSum += (q * p);
+    });
+    const serviceFee = parseFloat(document.getElementById('service-fee').value) || 0;
+    const total = partsSum + serviceFee;
+    const vat = total * 0.07;
+    document.getElementById('vat-amt').innerText = vat.toLocaleString(undefined, {minimumFractionDigits:2});
+    document.getElementById('grand-total').innerText = (total + vat).toLocaleString(undefined, {minimumFractionDigits:2});
+}
+
+function initCanvas(id) {
+    const canvas = document.getElementById(id);
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    
+    function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const cx = e.touches ? e.touches[0].clientX : e.clientX;
+        const cy = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: cx - rect.left, y: cy - rect.top };
+    }
+    
+    const start = (e) => { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
+    const move = (e) => { if(!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); };
+    
+    canvas.addEventListener('mousedown', start);
+    canvas.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('touchstart', start, {passive: false});
+    canvas.addEventListener('touchmove', move, {passive: false});
+}
+
+function clearSig(id) {
+    const c = document.getElementById(id);
+    c.getContext('2d').clearRect(0, 0, c.width, c.height);
+}
+
+function downloadPDF() {
+    const element = document.getElementById('service-sheet');
+    const opt = {
+        margin: 0,
+        filename: 'KIMAC_ServiceSheet.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+}
+
+window.onload = () => { initCanvas('sig-client'); initCanvas('sig-tech'); };
+</script>
 </body>
 </html>
