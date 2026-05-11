@@ -36,35 +36,36 @@
   }
   .page {
     width: 210mm;
-    min-height: 297mm;
+    height: 297mm;
     background: #fffde7;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    padding: 8mm 10mm;
+    padding: 6mm 8mm;
     position: relative;
+    overflow: hidden;
   }
   .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 3px solid #1a3a6e;
-    padding-bottom: 6px;
-    margin-bottom: 8px;
+    padding-bottom: 4px;
+    margin-bottom: 6px;
   }
-  .header-logo { width: 90px; height: auto; }
+  .header-logo { width: 75px; height: auto; }
   .header-center { text-align: center; flex: 1; }
-  .header-center h1 { font-size: 22px; font-weight: 700; color: #1a3a6e; letter-spacing: 2px; }
+  .header-center h1 { font-size: 20px; font-weight: 700; color: #1a3a6e; letter-spacing: 2px; }
   .header-center p { font-size: 11px; color: #555; }
   .header-right { text-align: right; min-width: 90px; }
   .job-no-box { border: 2px solid #1a3a6e; border-radius: 4px; padding: 4px 8px; background: white; margin-top: 4px; }
   .job-no-box label { font-size: 10px; color: #666; display: block; }
   .job-no-box input { border: none; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 13px; font-weight: 700; color: #1a3a6e; width: 90px; outline: none; text-align: center; }
-  .service-type-bar { background: #fff9c4; border: 1px solid #f9c900; border-radius: 4px; padding: 5px 10px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .service-type-bar { background: #fff9c4; border: 1px solid #f9c900; border-radius: 4px; padding: 3px 8px; margin-bottom: 5px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .service-type-bar span { font-weight: 600; color: #1a3a6e; white-space: nowrap; }
   .service-type-bar select { border: 1px solid #bfa000; border-radius: 4px; background: white; font-family: 'Sarabun', sans-serif; font-size: 13px; padding: 2px 8px; outline: none; cursor: pointer; color: #222; }
   .other-input { border: none; border-bottom: 1px solid #aaa; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 13px; width: 200px; outline: none; display: none; }
   .other-input.show { display: inline-block; }
-  .section-title { background: #1a3a6e; color: white; padding: 3px 10px; font-weight: 700; font-size: 13px; border-radius: 3px; margin-bottom: 6px; margin-top: 6px; }
-  .form-row { display: flex; gap: 8px; margin-bottom: 5px; align-items: center; flex-wrap: wrap; }
+  .section-title { background: #1a3a6e; color: white; padding: 2px 8px; font-weight: 700; font-size: 12px; border-radius: 3px; margin-bottom: 4px; margin-top: 5px; }
+  .form-row { display: flex; gap: 6px; margin-bottom: 4px; align-items: center; flex-wrap: wrap; }
   .field { display: flex; align-items: center; gap: 4px; flex: 1; }
   .field label { white-space: nowrap; color: #444; font-weight: 600; font-size: 12px; }
   .field input, .field select, .field textarea { flex: 1; border: none; border-bottom: 1px solid #bfa000; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 13px; padding: 1px 4px; outline: none; color: #222; min-width: 60px; }
@@ -72,7 +73,7 @@
   .field textarea { resize: none; border: 1px solid #bfa000; border-radius: 4px; background: rgba(255,255,255,0.7); padding: 4px; width: 100%; font-size: 13px; line-height: 1.6; }
   .full-width { width: 100%; flex: unset; }
   .status-row { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 5px; }
-  .status-block { display: flex; align-items: center; gap: 10px; background: #fff9c4; border: 1px solid #f9c900; border-radius: 4px; padding: 4px 10px; flex-wrap: wrap; }
+  .status-block { display: flex; align-items: center; gap: 8px; background: #fff9c4; border: 1px solid #f9c900; border-radius: 4px; padding: 3px 8px; flex-wrap: wrap; }
   .status-block label { font-weight: 600; color: #1a3a6e; font-size: 12px; white-space: nowrap; }
   .radio-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
   .radio-group label { display: flex; align-items: center; gap: 4px; font-size: 13px; cursor: pointer; font-weight: 400; color: #333; }
@@ -80,38 +81,25 @@
   .warranty-input { border: none; border-bottom: 1px solid #bfa000; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 13px; width: 160px; outline: none; display: none; }
   .warranty-input.show { display: inline-block; }
   .parts-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; font-size: 12px; }
-  .parts-table th { background: #1a3a6e; color: white; padding: 4px 6px; text-align: center; font-size: 12px; font-weight: 600; }
-  .parts-table td { border: 1px solid #d4c000; padding: 3px 5px; background: white; }
-  .parts-table td input { width: 100%; border: none; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 12px; outline: none; text-align: center; }
+  .parts-table th { background: #1a3a6e; color: white; padding: 3px 4px; text-align: center; font-size: 11px; font-weight: 600; }
+  .parts-table td { border: 1px solid #d4c000; padding: 2px 4px; background: white; }
+  .parts-table td input { width: 100%; border: none; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 11px; outline: none; text-align: center; }
   .parts-table td:first-child { text-align: center; width: 24px; background: #fff9c4; font-weight: 600; color: #1a3a6e; }
   .parts-table td:nth-child(2) input { text-align: left; }
   .parts-table .price-cell input { text-align: right; }
   .parts-table .total-label { text-align: right; font-weight: 700; background: #fff9c4; color: #1a3a6e; padding-right: 8px; border: 1px solid #d4c000; }
   .parts-table .total-val { text-align: right; background: #fffde0; font-weight: 700; color: #c00; border: 1px solid #d4c000; padding-right: 6px; min-width: 80px; }
-  .fee-row { display: flex; gap: 10px; align-items: center; background: #fff9c4; border: 1px solid #f9c900; border-radius: 4px; padding: 5px 10px; margin-bottom: 8px; flex-wrap: wrap; }
-  .fee-row label { font-weight: 600; color: #1a3a6e; font-size: 12px; white-space: nowrap; }
-  .fee-radio-group { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-  .fee-radio-group label { display: flex; align-items: center; gap: 4px; font-size: 13px; cursor: pointer; font-weight: 400; color: #333; }
-  .fee-radio-group input[type=radio] { width: 14px; height: 14px; accent-color: #1a3a6e; cursor: pointer; }
-  .province-input { border: none; border-bottom: 1px solid #bfa000; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 13px; width: 120px; outline: none; display: none; }
+  .province-input { border: none; border-bottom: 1px solid #bfa000; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 11px; width: 80px; outline: none; display: none; }
   .province-input.show { display: inline-block; }
-  .summary-box { float: right; width: 220px; border: 2px solid #1a3a6e; border-radius: 4px; overflow: hidden; margin-bottom: 8px; font-size: 13px; }
-  .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; background: white; border-bottom: 1px solid #e0d000; }
-  .summary-row:last-child { border-bottom: none; }
-  .summary-row.total-net { background: #1a3a6e; color: white; font-weight: 700; font-size: 14px; }
-  .summary-row label { font-weight: 600; color: #1a3a6e; }
-  .summary-row.total-net label { color: white; }
-  .summary-row input { border: none; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 13px; width: 90px; outline: none; text-align: right; font-weight: 700; color: #c00; }
-  .summary-row.total-net input { color: #fff9c4; font-size: 14px; }
-  .sig-section { clear: both; display: flex; gap: 12px; margin-top: 6px; margin-bottom: 8px; }
+  .sig-section { clear: both; display: flex; gap: 10px; margin-top: 4px; margin-bottom: 4px; }
   .sig-box { flex: 1; border: 1.5px solid #1a3a6e; border-radius: 6px; padding: 8px 10px 6px; background: white; text-align: center; }
   .sig-box .sig-title { font-size: 12px; font-weight: 700; color: #1a3a6e; margin-bottom: 4px; }
-  .sig-canvas { width: 100%; height: 70px; border: 1px dashed #bfa000; border-radius: 4px; cursor: crosshair; display: block; background: #fffde7; touch-action: none; }
+  .sig-canvas { width: 100%; height: 55px; border: 1px dashed #bfa000; border-radius: 4px; cursor: crosshair; display: block; background: #fffde7; touch-action: none; }
   .sig-meta { display: flex; gap: 8px; margin-top: 4px; font-size: 11px; align-items: center; flex-wrap: wrap; }
   .sig-meta label { color: #555; font-size: 11px; white-space: nowrap; }
   .sig-meta input { border: none; border-bottom: 1px solid #bfa000; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 11px; flex: 1; outline: none; min-width: 50px; }
   .btn-clear-sig { font-size: 10px; padding: 2px 6px; border: 1px solid #999; border-radius: 3px; background: #eee; cursor: pointer; font-family: 'Sarabun', sans-serif; margin-top: 3px; }
-  .rating-section { background: #fff9c4; border: 1px solid #f9c900; border-radius: 5px; padding: 6px 10px; margin-bottom: 6px; font-size: 12px; }
+  .rating-section { background: #fff9c4; border: 1px solid #f9c900; border-radius: 5px; padding: 4px 8px; margin-bottom: 4px; font-size: 11px; }
   .rating-section p { color: #555; margin-bottom: 5px; }
   .rating-stars { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
   .rating-stars label { display: flex; align-items: center; gap: 4px; font-size: 13px; cursor: pointer; color: #333; }
@@ -119,7 +107,7 @@
   .feedback-area { margin-top: 5px; }
   .feedback-area label { font-size: 11px; color: #666; }
   .feedback-area textarea { width: 100%; height: 42px; resize: none; border: 1px solid #d4c000; border-radius: 3px; background: rgba(255,255,255,0.7); font-family: 'Sarabun', sans-serif; font-size: 12px; padding: 3px 5px; outline: none; }
-  .footer { text-align: center; border-top: 2px solid #1a3a6e; padding-top: 6px; color: #1a3a6e; font-size: 11px; line-height: 1.8; }
+  .footer { text-align: center; border-top: 2px solid #1a3a6e; padding-top: 4px; color: #1a3a6e; font-size: 10px; line-height: 1.6; }
   .footer .thank-you { font-size: 13px; font-weight: 700; color: #1a3a6e; margin-bottom: 3px; }
   .footer .company-name { font-size: 12px; font-weight: 700; color: #1a3a6e; }
   .footer .contact { color: #444; font-size: 11px; }
@@ -198,7 +186,7 @@
   <div class="form-row">
     <div class="field full-width" style="flex-direction:column;align-items:flex-start;gap:3px;">
       <label>รายละเอียด :</label>
-      <textarea rows="3" style="width:100%;"></textarea>
+      <textarea rows="2" style="width:100%;"></textarea>
     </div>
   </div>
   <div class="section-title">ส่วนที่ 3 รายการอะไหล่ที่เปลี่ยน</div>
@@ -210,46 +198,56 @@
         <th style="width:13%">รหัส</th>
         <th style="width:8%">จำนวน</th>
         <th style="width:10%">หน่วย</th>
-        <th style="width:13%">ราคา/หน่วย</th>
-        <th style="width:13%">รวม</th>
+        <th style="width:15%">ราคา/หน่วย</th>
       </tr>
     </thead>
     <tbody id="partsBody"></tbody>
     <tfoot>
       <tr>
-        <td colspan="5" class="total-label">รวมค่าอะไหล่</td>
+        <td colspan="4" class="total-label" style="font-size:11px;">ส่วนที่ 4 ค่าบริการ</td>
+        <td colspan="2" style="background:#fff9c4;border:1px solid #d4c000;padding:3px 6px;">
+          <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
+            <label style="font-size:11px;color:#1a3a6e;font-weight:600;">ประเภท :</label>
+            <select id="feeTypeSelect" onchange="toggleFee(this)" style="border:1px solid #bfa000;border-radius:3px;background:white;font-family:'Sarabun',sans-serif;font-size:11px;padding:1px 4px;outline:none;cursor:pointer;color:#222;">
+              <option value="">-- เลือก --</option>
+              <option value="free">ฟรี</option>
+              <option value="bkk">กรุงเทพฯ/ปริมณฑล</option>
+              <option value="province">ต่างจังหวัด</option>
+            </select>
+            <input type="text" id="provinceInput" class="province-input" placeholder="จังหวัด..." style="width:80px;">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4" class="total-label">รวมค่าอะไหล่</td>
         <td colspan="2" class="total-val"><input type="text" id="subParts" readonly placeholder="0.00"></td>
+      </tr>
+      <tr>
+        <td colspan="3" class="total-label" style="font-size:11px;">ค่าบริการ (บาท)</td>
+        <td colspan="1" style="background:#fff9c4;border:1px solid #d4c000;padding:2px 4px;">
+          <input type="number" id="feeAmount" onchange="calcTotal()" oninput="calcTotal()" style="width:100%;border:none;background:transparent;font-family:'Sarabun',sans-serif;font-size:12px;padding:1px 2px;outline:none;text-align:right;" placeholder="0.00">
+        </td>
+        <td colspan="2" class="total-val"><input type="text" id="s_fee" readonly placeholder="0.00"></td>
+      </tr>
+      <tr>
+        <td colspan="4" class="total-label">รวมยอด</td>
+        <td colspan="2" class="total-val"><input type="text" id="s_sub" readonly placeholder="0.00"></td>
+      </tr>
+      <tr>
+        <td colspan="4" class="total-label">VAT 7%</td>
+        <td colspan="2" class="total-val"><input type="text" id="s_vat" readonly placeholder="0.00"></td>
+      </tr>
+      <tr style="background:#1a3a6e;">
+        <td colspan="4" style="text-align:right;font-weight:700;color:white;font-size:13px;padding:4px 8px;border:1px solid #1a3a6e;">รวมยอดสุทธิ</td>
+        <td colspan="2" style="text-align:right;background:#1a3a6e;border:1px solid #1a3a6e;padding-right:6px;"><input type="text" id="s_total" readonly placeholder="0.00" style="width:100%;border:none;background:transparent;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;color:#fff9c4;text-align:right;outline:none;"></td>
       </tr>
     </tfoot>
   </table>
-  <div class="section-title">ส่วนที่ 4 ค่าบริการ</div>
-  <div class="fee-row">
-    <label>ค่าบริการ :</label>
-    <div class="fee-radio-group">
-      <label><input type="radio" name="fee" value="free" onchange="toggleFee(this)"> ฟรี</label>
-      <label><input type="radio" name="fee" value="bkk" onchange="toggleFee(this)"> กรุงเทพฯ/ปริมณฑล</label>
-      <label><input type="radio" name="fee" value="province" onchange="toggleFee(this)"> ต่างจังหวัด</label>
-    </div>
-    <span style="font-size:12px;color:#555;">จังหวัด :</span>
-    <input type="text" id="provinceInput" class="province-input" placeholder="ระบุจังหวัด...">
-    <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
-      <label style="font-weight:600;color:#1a3a6e;font-size:12px;">ค่าบริการ :</label>
-      <input type="number" id="feeAmount" onchange="calcTotal()" oninput="calcTotal()" style="width:90px;border:1px solid #bfa000;border-radius:4px;background:white;font-family:'Sarabun',sans-serif;font-size:13px;padding:2px 5px;outline:none;text-align:right;" placeholder="0.00">
-      <span style="font-size:12px;color:#555;">บาท</span>
-    </div>
-  </div>
-  <div class="summary-box">
-    <div class="summary-row"><label>รวมค่าอะไหล่</label><input type="text" id="s_parts" readonly placeholder="0.00"></div>
-    <div class="summary-row"><label>ค่าบริการ</label><input type="text" id="s_fee" readonly placeholder="0.00"></div>
-    <div class="summary-row"><label>รวมยอด</label><input type="text" id="s_sub" readonly placeholder="0.00"></div>
-    <div class="summary-row"><label>VAT 7%</label><input type="text" id="s_vat" readonly placeholder="0.00"></div>
-    <div class="summary-row total-net"><label>รวมยอดสุทธิ</label><input type="text" id="s_total" readonly placeholder="0.00"></div>
-  </div>
   <div class="section-title" style="clear:both;">ส่วนที่ 5 ลูกค้า / ผู้ให้บริการ</div>
   <div class="sig-section">
     <div class="sig-box">
       <div class="sig-title">ลายเซ็นช่างผู้ให้บริการ</div>
-      <canvas class="sig-canvas" id="techSig" width="300" height="70"></canvas>
+      <canvas class="sig-canvas" id="techSig" width="300" height="55"></canvas>
       <div style="text-align:right;"><button class="btn-clear-sig" onclick="clearSig('techSig')">ลบลายเซ็น</button></div>
       <div class="sig-meta">
         <label>ชื่อช่าง :</label><input type="text">
@@ -258,7 +256,7 @@
     </div>
     <div class="sig-box">
       <div class="sig-title">ลายเซ็นลูกค้า / ผู้ตรวจรับงาน</div>
-      <canvas class="sig-canvas" id="custSig" width="300" height="70"></canvas>
+      <canvas class="sig-canvas" id="custSig" width="300" height="55"></canvas>
       <div style="text-align:right;"><button class="btn-clear-sig" onclick="clearSig('custSig')">ลบลายเซ็น</button></div>
       <div class="sig-meta">
         <label>ชื่อ :</label><input type="text">
@@ -295,7 +293,7 @@ function buildPartsTable() {
   const tbody = document.getElementById('partsBody');
   for (let i = 1; i <= NUM_ROWS; i++) {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${i}</td><td><input type="text" style="text-align:left;width:100%" oninput="calcTotal()"></td><td><input type="text" oninput="calcTotal()"></td><td><input type="number" min="0" oninput="calcTotal()" style="width:100%"></td><td><input type="text" oninput="calcTotal()"></td><td class="price-cell"><input type="number" min="0" step="0.01" oninput="calcTotal()" style="width:100%;text-align:right"></td><td class="price-cell"><input type="text" readonly style="width:100%;text-align:right;background:#fffde0;color:#c00;font-weight:700"></td>`;
+    tr.innerHTML = `<td>${i}</td><td><input type="text" style="text-align:left;width:100%" oninput="calcTotal()"></td><td><input type="text" oninput="calcTotal()"></td><td><input type="number" min="0" oninput="calcTotal()" style="width:100%"></td><td><input type="text" oninput="calcTotal()"></td><td class="price-cell"><input type="number" min="0" step="0.01" oninput="calcTotal()" style="width:100%;text-align:right"></td>`;
     tbody.appendChild(tr);
   }
 }
@@ -308,7 +306,6 @@ function calcTotal() {
     const qty = parseFloat(r.querySelectorAll('input')[3].value) || 0;
     const price = parseFloat(r.querySelectorAll('input')[5].value) || 0;
     const rowTotal = qty * price;
-    r.querySelectorAll('input')[6].value = rowTotal > 0 ? rowTotal.toFixed(2) : '';
     partsSum += rowTotal;
   });
   document.getElementById('subParts').value = partsSum > 0 ? partsSum.toFixed(2) : '';
@@ -332,9 +329,9 @@ function toggleWarranty(el) {
   if (el.value === 'in') box.classList.add('show');
   else box.classList.remove('show');
 }
-function toggleFee(el) {
+function toggleFee(sel) {
   const pi = document.getElementById('provinceInput');
-  if (el.value === 'bkk' || el.value === 'province') pi.classList.add('show');
+  if (sel.value === 'bkk' || sel.value === 'province') pi.classList.add('show');
   else pi.classList.remove('show');
 }
 function initCanvas(canvasId) {
