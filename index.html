@@ -194,42 +194,38 @@
     <thead>
       <tr>
         <th>#</th>
-        <th style="text-align:left;width:38%">รายการอะไหล่</th>
-        <th style="width:13%">รหัส</th>
-        <th style="width:8%">จำนวน</th>
-        <th style="width:10%">หน่วย</th>
-        <th style="width:15%">ราคา/หน่วย</th>
+        <th style="text-align:left;width:32%">รายการอะไหล่</th>
+        <th style="width:12%">รหัส</th>
+        <th style="width:7%">จำนวน</th>
+        <th style="width:8%">หน่วย</th>
+        <th style="width:13%">ราคา/หน่วย</th>
+        <th style="width:13%">รวม</th>
       </tr>
     </thead>
     <tbody id="partsBody"></tbody>
     <tfoot>
       <tr>
-        <td colspan="6" style="background:#1a3a6e;color:white;font-weight:700;font-size:12px;padding:2px 8px;border-radius:0;">ส่วนที่ 4 สรุปยอด</td>
-      </tr>
-      <tr>
-        <td colspan="4" class="total-label">รวมยอด</td>
+        <td colspan="5" class="total-label">รวมยอด</td>
         <td colspan="2" class="total-val"><input type="text" id="s_sub" readonly placeholder="0.00"></td>
       </tr>
       <tr>
-        <td colspan="4" class="total-label">VAT 7%</td>
+        <td colspan="5" class="total-label">VAT 7%</td>
         <td colspan="2" class="total-val"><input type="text" id="s_vat" readonly placeholder="0.00"></td>
       </tr>
       <tr>
-        <td colspan="4" style="text-align:right;font-weight:700;color:#1a3a6e;font-size:13px;padding:4px 8px;border:1px solid #d4c000;background:#f0f4ff;">รวมยอดสุทธิ</td>
+        <td colspan="5" style="text-align:right;font-weight:700;color:#1a3a6e;font-size:13px;padding:4px 8px;border:1px solid #d4c000;background:#f0f4ff;">รวมยอดสุทธิ</td>
         <td colspan="2" style="text-align:right;background:#f0f4ff;border:1px solid #d4c000;padding-right:6px;"><input type="text" id="s_total" readonly placeholder="0.00" style="width:100%;border:none;background:transparent;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;color:#1a3a6e;text-align:right;outline:none;"></td>
-      </tr>
-      <tr>
-        <td colspan="6" style="border:1px solid #d4c000;background:#f8f8f8;padding:3px 8px;">
-          <div style="display:flex;align-items:center;gap:12px;">
-            <span style="font-weight:600;color:#1a3a6e;font-size:12px;white-space:nowrap;">ประเภทค่าบริการ :</span>
-            <label style="display:flex;align-items:center;gap:3px;font-size:12px;cursor:pointer;white-space:nowrap;"><input type="radio" name="feeType" value="free" onchange="toggleFee(this)" style="accent-color:#1a3a6e;"> ฟรี</label>
-            <label style="display:flex;align-items:center;gap:3px;font-size:12px;cursor:pointer;white-space:nowrap;"><input type="radio" name="feeType" value="bkk" onchange="toggleFee(this)" style="accent-color:#1a3a6e;"> กรุงเทพฯ/ปริมณฑล</label>
-            <label style="display:flex;align-items:center;gap:3px;font-size:12px;cursor:pointer;white-space:nowrap;"><input type="radio" name="feeType" value="province" onchange="toggleFee(this)" style="accent-color:#1a3a6e;"> ต่างจังหวัด <input type="text" id="provinceInput" class="province-input" placeholder="ระบุจังหวัด..."></label>
-          </div>
-        </td>
       </tr>
     </tfoot>
   </table>
+  <div class="section-title">ส่วนที่ 4 ประเภทค่าบริการ</div>
+  <div style="background:#f8f8f8;border:1px solid #d4c000;border-radius:0 0 4px 4px;padding:3px 8px;margin-bottom:3px;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <label style="display:flex;align-items:center;gap:3px;font-size:12px;cursor:pointer;white-space:nowrap;"><input type="radio" name="feeType" value="free" onchange="toggleFee(this)" style="accent-color:#1a3a6e;"> ฟรี</label>
+      <label style="display:flex;align-items:center;gap:3px;font-size:12px;cursor:pointer;white-space:nowrap;"><input type="radio" name="feeType" value="bkk" onchange="toggleFee(this)" style="accent-color:#1a3a6e;"> กรุงเทพฯ/ปริมณฑล</label>
+      <label style="display:flex;align-items:center;gap:3px;font-size:12px;cursor:pointer;white-space:nowrap;"><input type="radio" name="feeType" value="province" onchange="toggleFee(this)" style="accent-color:#1a3a6e;"> ต่างจังหวัด <input type="text" id="provinceInput" class="province-input" placeholder="ระบุจังหวัด..."></label>
+    </div>
+  </div>
   <div class="section-title" style="clear:both;">ส่วนที่ 5 ลูกค้า / ผู้ให้บริการ</div>
   <div class="sig-section">
     <div class="sig-box">
@@ -279,19 +275,36 @@ function buildPartsTable() {
   const tbody = document.getElementById('partsBody');
   for (let i = 1; i <= NUM_ROWS; i++) {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${i}</td><td><input type="text" style="text-align:left;width:100%" oninput="calcTotal()"></td><td><input type="text" oninput="calcTotal()"></td><td><input type="number" min="0" oninput="calcTotal()" style="width:100%"></td><td><input type="text" oninput="calcTotal()"></td><td class="price-cell"><input type="number" min="0" step="0.01" oninput="calcTotal()" style="width:100%;text-align:right"></td>`;
+    tr.innerHTML = `
+      <td>${i}</td>
+      <td><input type="text" style="text-align:left;width:100%" oninput="calcTotal()"></td>
+      <td><input type="text" style="width:100%"></td>
+      <td><input type="number" min="0" step="1" oninput="calcRowTotal(this)" style="width:100%;text-align:right"></td>
+      <td><input type="text" style="width:100%"></td>
+      <td class="price-cell"><input type="number" min="0" step="0.01" oninput="calcRowTotal(this)" style="width:100%;text-align:right"></td>
+      <td class="price-cell"><input type="text" readonly style="width:100%;text-align:right;background:#fffde0;color:#333;font-weight:600;"></td>
+    `;
     tbody.appendChild(tr);
   }
 }
 buildPartsTable();
 
+function calcRowTotal(input) {
+  const row = input.closest('tr');
+  const inputs = row.querySelectorAll('input');
+  const qty = parseFloat(inputs[3].value) || 0;
+  const price = parseFloat(inputs[5].value) || 0;
+  const rowTotal = qty * price;
+  inputs[6].value = rowTotal > 0 ? rowTotal.toFixed(2) : '';
+  calcTotal();
+}
+
 function calcTotal() {
   const rows = document.querySelectorAll('#partsBody tr');
   let partsSum = 0;
   rows.forEach(r => {
-    const qty = parseFloat(r.querySelectorAll('input')[3].value) || 0;
-    const price = parseFloat(r.querySelectorAll('input')[5].value) || 0;
-    partsSum += qty * price;
+    const val = parseFloat(r.querySelectorAll('input')[6].value) || 0;
+    partsSum += val;
   });
   const vat = partsSum * 0.07;
   const net = partsSum + vat;
