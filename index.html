@@ -37,7 +37,7 @@
   .page {
     width: 210mm;
     height: 297mm;
-    background: #fffde7;
+    background: #ffffff;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     padding: 6mm 8mm;
     position: relative;
@@ -173,7 +173,7 @@
         <label><input type="radio" name="warranty" value="in" onchange="toggleWarranty(this)"> ในรับประกัน</label>
         <label><input type="radio" name="warranty" value="out" onchange="toggleWarranty(this)"> นอกรับประกัน</label>
       </div>
-      <span style="font-size:12px;color:#555;margin-left:4px;">เลขที่ :</span>
+      <span id="warrantyLabel" style="font-size:12px;color:#555;margin-left:4px;display:none;">เลขที่ :</span>
       <input type="text" id="warrantyNo" class="warranty-input" placeholder="กรอกเลขประกัน...">
     </div>
   </div>
@@ -204,30 +204,19 @@
     <tbody id="partsBody"></tbody>
     <tfoot>
       <tr>
-        <td colspan="4" class="total-label" style="font-size:11px;">ส่วนที่ 4 ค่าบริการ</td>
-        <td colspan="2" style="background:#fff9c4;border:1px solid #d4c000;padding:3px 6px;">
-          <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
-            <label style="font-size:11px;color:#1a3a6e;font-weight:600;">ประเภท :</label>
-            <select id="feeTypeSelect" onchange="toggleFee(this)" style="border:1px solid #bfa000;border-radius:3px;background:white;font-family:'Sarabun',sans-serif;font-size:11px;padding:1px 4px;outline:none;cursor:pointer;color:#222;">
-              <option value="">-- เลือก --</option>
-              <option value="free">ฟรี</option>
-              <option value="bkk">กรุงเทพฯ/ปริมณฑล</option>
-              <option value="province">ต่างจังหวัด</option>
-            </select>
-            <input type="text" id="provinceInput" class="province-input" placeholder="จังหวัด..." style="width:80px;">
-          </div>
+        <td colspan="6" style="background:#1a3a6e;color:white;font-weight:700;font-size:12px;padding:3px 8px;border:1px solid #1a3a6e;">
+          ส่วนที่ 4 ค่าบริการ &nbsp;&nbsp;
+          <select id="feeTypeSelect" onchange="toggleFee(this)" style="border:1px solid #8099c0;border-radius:3px;background:#2a5298;color:white;font-family:'Sarabun',sans-serif;font-size:11px;padding:1px 4px;outline:none;cursor:pointer;">
+            <option value="">-- เลือกประเภท --</option>
+            <option value="free">ฟรี</option>
+            <option value="bkk">กรุงเทพฯ/ปริมณฑล</option>
+            <option value="province">ต่างจังหวัด</option>
+          </select>
+          <input type="text" id="provinceInput" class="province-input" placeholder="จังหวัด..." style="width:80px;color:white;border-bottom:1px solid #aac;">
+          &nbsp; ค่าบริการ :
+          <input type="number" id="feeAmount" onchange="calcTotal()" oninput="calcTotal()" style="width:80px;border:none;border-bottom:1px solid #aac;background:transparent;font-family:'Sarabun',sans-serif;font-size:12px;padding:1px 4px;outline:none;text-align:right;color:white;" placeholder="0.00">
+          บาท
         </td>
-      </tr>
-      <tr>
-        <td colspan="4" class="total-label">รวมค่าอะไหล่</td>
-        <td colspan="2" class="total-val"><input type="text" id="subParts" readonly placeholder="0.00"></td>
-      </tr>
-      <tr>
-        <td colspan="3" class="total-label" style="font-size:11px;">ค่าบริการ (บาท)</td>
-        <td colspan="1" style="background:#fff9c4;border:1px solid #d4c000;padding:2px 4px;">
-          <input type="number" id="feeAmount" onchange="calcTotal()" oninput="calcTotal()" style="width:100%;border:none;background:transparent;font-family:'Sarabun',sans-serif;font-size:12px;padding:1px 2px;outline:none;text-align:right;" placeholder="0.00">
-        </td>
-        <td colspan="2" class="total-val"><input type="text" id="s_fee" readonly placeholder="0.00"></td>
       </tr>
       <tr>
         <td colspan="4" class="total-label">รวมยอด</td>
@@ -237,9 +226,9 @@
         <td colspan="4" class="total-label">VAT 7%</td>
         <td colspan="2" class="total-val"><input type="text" id="s_vat" readonly placeholder="0.00"></td>
       </tr>
-      <tr style="background:#1a3a6e;">
-        <td colspan="4" style="text-align:right;font-weight:700;color:white;font-size:13px;padding:4px 8px;border:1px solid #1a3a6e;">รวมยอดสุทธิ</td>
-        <td colspan="2" style="text-align:right;background:#1a3a6e;border:1px solid #1a3a6e;padding-right:6px;"><input type="text" id="s_total" readonly placeholder="0.00" style="width:100%;border:none;background:transparent;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;color:#fff9c4;text-align:right;outline:none;"></td>
+      <tr>
+        <td colspan="4" style="text-align:right;font-weight:700;color:#1a3a6e;font-size:13px;padding:4px 8px;border:1px solid #d4c000;background:#f0f4ff;">รวมยอดสุทธิ</td>
+        <td colspan="2" style="text-align:right;background:#f0f4ff;border:1px solid #d4c000;padding-right:6px;"><input type="text" id="s_total" readonly placeholder="0.00" style="width:100%;border:none;background:transparent;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;color:#1a3a6e;text-align:right;outline:none;"></td>
       </tr>
     </tfoot>
   </table>
@@ -280,10 +269,9 @@
   </div>
   <div class="footer">
     <div class="thank-you">ขอขอบพระคุณท่านที่ได้สละเวลาในการแสดงความคิดเห็นครั้งนี้ และทางบริษัทหวังว่าจะได้รับใช้ท่านในโอกาสต่อไป</div>
-    <div class="company-name">บริษัท คีแมค จำกัด &bull; KIMAC CO.,LTD.</div>
+    <div class="company-name">บริษัท คีแมค จำกัด</div>
     <div class="contact">298 ถนนสามวา แขวงบางชัน เขตคลองสามวา กรุงเทพมหานคร 10510</div>
-    <div class="contact">298 Samwa Rd., Bangchan, Klongsamwa, Bangkok, Thailand 10510</div>
-    <div class="contact">Tel. (+66)2-956-8291-2 &nbsp;&nbsp; www.kimacthailand.com</div>
+    <div class="contact">Tel. (+66)2-956-8291-2 &nbsp; Line : @kimac &nbsp; www.kimacthailand.com</div>
   </div>
 </div>
 
@@ -305,16 +293,12 @@ function calcTotal() {
   rows.forEach(r => {
     const qty = parseFloat(r.querySelectorAll('input')[3].value) || 0;
     const price = parseFloat(r.querySelectorAll('input')[5].value) || 0;
-    const rowTotal = qty * price;
-    partsSum += rowTotal;
+    partsSum += qty * price;
   });
-  document.getElementById('subParts').value = partsSum > 0 ? partsSum.toFixed(2) : '';
   const fee = parseFloat(document.getElementById('feeAmount').value) || 0;
   const sub = partsSum + fee;
   const vat = sub * 0.07;
   const net = sub + vat;
-  document.getElementById('s_parts').value = partsSum > 0 ? partsSum.toFixed(2) : '';
-  document.getElementById('s_fee').value = fee > 0 ? fee.toFixed(2) : '';
   document.getElementById('s_sub').value = sub > 0 ? sub.toFixed(2) : '';
   document.getElementById('s_vat').value = vat > 0 ? vat.toFixed(2) : '';
   document.getElementById('s_total').value = net > 0 ? net.toFixed(2) : '';
@@ -326,8 +310,9 @@ function toggleOtherService(sel) {
 }
 function toggleWarranty(el) {
   const box = document.getElementById('warrantyNo');
-  if (el.value === 'in') box.classList.add('show');
-  else box.classList.remove('show');
+  const lbl = document.getElementById('warrantyLabel');
+  if (el.value === 'in') { box.classList.add('show'); lbl.style.display='inline'; }
+  else { box.classList.remove('show'); lbl.style.display='none'; }
 }
 function toggleFee(sel) {
   const pi = document.getElementById('provinceInput');
