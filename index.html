@@ -13,252 +13,249 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px;
-    font-size: 14px;
-    color: #333;
+    padding: 20px;
+    font-size: 13px;
   }
-  
-  /* Button Styling */
   .btn-export {
     margin-bottom: 15px;
-    padding: 12px 24px;
+    padding: 10px 28px;
     background: #1a3a6e;
     color: white;
     border: none;
     border-radius: 6px;
     font-family: 'Sarabun', sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
     font-weight: 600;
-    width: 100%;
-    max-width: 400px;
+  }
+  .btn-export:hover { background: #122d57; }
+  
+  /* CSS สำหรับการพิมพ์ */
+  @media print {
+    body { background: white; padding: 0; }
+    .btn-export { display: none; }
+    .page { box-shadow: none; margin: 0; width: 210mm; height: 297mm; }
+    .sig-trigger-btn { display: none !important; }
+    .sig-preview-img { display: block !important; }
+    .btn-add-row { display: none !important; }
   }
 
-  /* Page Setup */
+  /* ปรับแต่งสำหรับ Desktop (A4) */
   .page {
-    width: 100%;
-    max-width: 210mm; /* A4 Width */
+    width: 210mm;
     min-height: 297mm;
     background: #ffffff;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    padding: 15px;
+    padding: 5mm 8mm 4mm 8mm;
     position: relative;
-    margin-bottom: 20px;
   }
 
-  /* Header Section */
+  /* --- Mobile Responsive Fix --- */
+  @media screen and (max-width: 768px) {
+    body { padding: 10px; }
+    .page {
+      width: 100%;
+      height: auto;
+      padding: 15px;
+    }
+    .header {
+      flex-direction: column;
+      text-align: center;
+      gap: 10px;
+    }
+    .header-right {
+      text-align: center;
+      min-width: 100%;
+    }
+    .job-no-box input {
+      width: 100%;
+    }
+    .sig-section {
+      flex-direction: column;
+    }
+    .status-block {
+      width: 100%;
+    }
+    .parts-table {
+      display: block;
+      overflow-x: auto; /* เลื่อนตารางแนวนอนได้ถ้ามือถือแคบมาก */
+    }
+  }
+
   .header {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     border-bottom: 3px solid #1a3a6e;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-    gap: 10px;
+    padding-bottom: 3px;
+    margin-bottom: 4px;
   }
-  .header-logo-wrap { display: flex; flex-direction: column; align-items: center; flex: 1; min-width: 100px; }
-  .header-logo { width: 80px; height: auto; object-fit: contain; }
-  .header-center { text-align: center; flex: 2; min-width: 200px; }
-  .header-center h1 { font-size: 18px; color: #1a3a6e; margin-bottom: 5px; }
-  .header-right { flex: 1; min-width: 120px; text-align: right; }
-  
-  .job-no-box { 
-    border: 2px solid #1a3a6e; 
-    border-radius: 4px; 
-    padding: 5px; 
-    display: inline-block;
-  }
-  .job-no-box input { border: none; font-weight: bold; width: 100px; text-align: center; font-size: 14px; outline: none; }
-
-  /* Input Elements */
-  .section-title { 
-    background: #1a3a6e; 
-    color: white; 
-    padding: 5px 10px; 
-    font-weight: bold; 
-    font-size: 13px; 
-    margin: 15px 0 10px 0;
-    border-radius: 3px;
-  }
-
-  .form-row { 
-    display: flex; 
-    flex-wrap: wrap; 
-    gap: 10px; 
-    margin-bottom: 10px; 
-  }
-  .field { 
-    display: flex; 
-    flex-direction: row; 
-    align-items: center; 
-    gap: 8px; 
-    flex: 1; 
-    min-width: 200px; 
-  }
-  .field label { font-weight: 600; white-space: nowrap; font-size: 13px; }
-  .field input, .field select { 
-    flex: 1; 
-    border: none; 
-    border-bottom: 1px solid #ccc; 
-    padding: 4px; 
-    font-family: 'Sarabun';
-    font-size: 14px;
-  }
-
-  /* Table Responsive */
-  .table-container {
-    width: 100%;
-    overflow-x: auto;
-    margin-bottom: 15px;
-  }
-  .parts-table { width: 100%; border-collapse: collapse; min-width: 600px; }
-  .parts-table th { background: #1a3a6e; color: white; padding: 8px; font-size: 12px; }
-  .parts-table td { border: 1px solid #ddd; padding: 5px; }
-  .parts-table input { width: 100%; border: none; font-family: 'Sarabun'; outline: none; }
-
-  /* Signature Section */
-  .sig-section { 
-    display: flex; 
-    flex-wrap: wrap; 
-    gap: 15px; 
-    margin-top: 20px; 
-  }
-  .sig-box { 
-    flex: 1; 
-    min-width: 250px; 
-    border: 1px solid #1a3a6e; 
-    padding: 10px; 
-    border-radius: 6px; 
-    text-align: center;
-  }
+  .header-logo-wrap { display: flex; flex-direction: column; align-items: center; }
+  .header-logo { width: 90px; height: 70px; object-fit: contain; }
+  .header-logo-sub { font-size: 9px; font-weight: 700; color: #1a3a6e; letter-spacing: 1px; text-align: center; margin-top: 2px; white-space: nowrap; }
+  .header-center { text-align: center; flex: 1; }
+  .header-center h1 { font-size: 20px; font-weight: 700; color: #1a3a6e; letter-spacing: 2px; }
+  .header-center p { font-size: 11px; color: #555; }
+  .header-right { text-align: right; min-width: 90px; }
+  .job-no-box { border: 2px solid #1a3a6e; border-radius: 4px; padding: 4px 8px; background: white; margin-top: 4px; }
+  .job-no-box label { font-size: 10px; color: #666; display: block; }
+  .job-no-box input { border: none; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 13px; font-weight: 700; color: #1a3a6e; width: 90px; outline: none; text-align: center; }
+  .service-type-bar { background: #fff9c4; border: 1px solid #f9c900; border-radius: 4px; padding: 2px 8px; margin-bottom: 3px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .service-type-bar span { font-weight: 600; color: #1a3a6e; white-space: nowrap; }
+  .service-type-bar select { border: 1px solid #bfa000; border-radius: 4px; background: white; font-family: 'Sarabun', sans-serif; font-size: 13px; padding: 2px 8px; outline: none; cursor: pointer; color: #222; }
+  .other-input { border: none; border-bottom: 1px solid #aaa; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 13px; width: 200px; outline: none; display: none; }
+  .other-input.show { display: inline-block; }
+  .section-title { background: #1a3a6e; color: white; padding: 2px 8px; font-weight: 700; font-size: 11px; border-radius: 3px; margin-bottom: 3px; margin-top: 4px; }
+  .form-row { display: flex; gap: 6px; margin-bottom: 3px; align-items: center; flex-wrap: wrap; }
+  .field { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 200px; }
+  .field label { white-space: nowrap; color: #444; font-weight: 600; font-size: 12px; }
+  .field input, .field select, .field textarea { flex: 1; border: none; border-bottom: 1px solid #bfa000; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 13px; padding: 1px 4px; outline: none; color: #222; min-width: 60px; }
+  .field select { border: 1px solid #bfa000; border-radius: 4px; background: white; padding: 2px 4px; cursor: pointer; }
+  .field textarea { resize: none; border: 1px solid #bfa000; border-radius: 4px; background: rgba(255,255,255,0.7); padding: 4px; width: 100%; font-size: 13px; line-height: 1.6; }
+  .full-width { width: 100%; flex: unset; }
+  .status-row { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 3px; }
+  .status-block { display: flex; align-items: center; gap: 8px; background: #fff9c4; border: 1px solid #f9c900; border-radius: 4px; padding: 2px 8px; flex-wrap: wrap; }
+  .status-block label { font-weight: 600; color: #1a3a6e; font-size: 12px; white-space: nowrap; }
+  .radio-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .radio-group label { display: flex; align-items: center; gap: 4px; font-size: 13px; cursor: pointer; font-weight: 400; color: #333; }
+  .radio-group input[type=radio] { width: 14px; height: 14px; accent-color: #1a3a6e; cursor: pointer; }
+  .warranty-input { border: none; border-bottom: 1px solid #bfa000; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 13px; width: 160px; outline: none; display: none; }
+  .warranty-input.show { display: inline-block; }
+  .parts-table { width: 100%; border-collapse: collapse; margin-bottom: 3px; font-size: 12px; }
+  .parts-table th { background: #1a3a6e; color: white; padding: 3px 4px; text-align: center; font-size: 11px; font-weight: 600; }
+  .parts-table td { border: 1px solid #d4c000; padding: 2px 4px; background: white; }
+  .parts-table td input { width: 100%; border: none; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 11px; outline: none; text-align: center; }
+  .parts-table td:first-child { text-align: center; width: 24px; background: #fff9c4; font-weight: 600; color: #1a3a6e; }
+  .parts-table td:nth-child(2) input { text-align: left; }
+  .parts-table .price-cell input { text-align: right; }
+  .parts-table .total-label { text-align: right; font-weight: 700; background: #fff9c4; color: #1a3a6e; padding-right: 8px; border: 1px solid #d4c000; }
+  .parts-table .total-val { text-align: right; background: #fffde0; font-weight: 700; color: #c00; border: 1px solid #d4c000; padding-right: 6px; min-width: 80px; }
+  .province-input { border: none; border-bottom: 1px solid #bfa000; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 12px; width: 110px; outline: none; display: none; color: #222; }
+  .province-input.show { display: inline-block; }
+  .sig-section { clear: both; display: flex; gap: 10px; margin-top: 3px; margin-bottom: 3px; }
+  .sig-box { flex: 1; border: 1.5px solid #1a3a6e; border-radius: 6px; padding: 4px 8px 4px; background: white; text-align: center; }
+  .sig-box .sig-title { font-size: 12px; font-weight: 700; color: #1a3a6e; margin-bottom: 4px; }
   .sig-preview-wrap {
-    height: 80px;
-    border: 1px dashed #ccc;
-    margin: 10px 0;
+    position: relative;
+    width: 100%;
+    height: 45px;
+    border: 1px dashed #bfa000;
+    border-radius: 4px;
+    background: #f8f8f8;
+    overflow: hidden;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fdfdfd;
   }
-
-  /* Responsive Adjustments */
-  @media (max-width: 600px) {
-    .header { flex-direction: column; text-align: center; }
-    .header-right { text-align: center; }
-    .field { flex-direction: column; align-items: flex-start; gap: 2px; }
-    .field input { width: 100%; }
-    .page { padding: 10px; box-shadow: none; }
+  .sig-preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: none;
+    position: absolute;
+    top: 0; left: 0;
   }
-
-  /* Print Styles */
-  @media print {
-    body { background: white; padding: 0; }
-    .btn-export, .btn-add-row { display: none !important; }
-    .page { box-shadow: none; margin: 0; width: 100%; }
+  .sig-trigger-btn {
+    font-size: 11px;
+    color: #555;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Sarabun', sans-serif;
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 1;
   }
+  .sig-meta { display: flex; gap: 6px; margin-top: 2px; font-size: 11px; align-items: center; flex-wrap: wrap; }
+  .sig-meta label { color: #555; font-size: 11px; white-space: nowrap; }
+  .sig-meta input { border: none; border-bottom: 1px solid #bfa000; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 11px; flex: 1; outline: none; min-width: 50px; }
+  .btn-clear-sig { font-size: 10px; padding: 2px 6px; border: 1px solid #999; border-radius: 3px; background: #eee; cursor: pointer; font-family: 'Sarabun', sans-serif; margin-top: 3px; }
+  .sig-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .sig-modal-overlay.open { display: flex; }
+  .sig-modal-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #1a3a6e;
+    color: white;
+  }
+  .sig-modal-title { font-family: 'Sarabun', sans-serif; font-size: 15px; font-weight: 700; color: white; }
+  .sig-modal-body {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: white;
+  }
+  .sig-modal-hint { font-family: 'Sarabun', sans-serif; font-size: 13px; color: #888; margin-bottom: 10px; }
+  .sig-modal-canvas-wrap {
+    width: 100%;
+    max-width: 560px;
+    border: 2px dashed #bfa000;
+    border-radius: 8px;
+    background: #fafafa;
+    overflow: hidden;
+  }
+  #sigModalCanvas { display: block; width: 100%; touch-action: none; cursor: crosshair; background: #fafafa; }
+  .sig-modal-footer {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .sig-modal-btn { padding: 10px 28px; font-family: 'Sarabun', sans-serif; font-size: 14px; font-weight: 600; border-radius: 6px; border: none; cursor: pointer; }
+  .sig-modal-btn.confirm { background: #1a3a6e; color: white; }
+  .sig-modal-btn.clear { background: #eee; color: #333; border: 1px solid #bbb; }
+  .sig-modal-btn.cancel { background: #c00; color: white; }
+  .rating-section { background: #fff9c4; border: 1px solid #f9c900; border-radius: 5px; padding: 3px 8px; margin-bottom: 3px; font-size: 11px; }
+  .rating-section p { color: #555; margin-bottom: 2px; }
+  .rating-stars { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .rating-stars label { display: flex; align-items: center; gap: 4px; font-size: 13px; cursor: pointer; color: #333; }
+  .rating-stars input[type=radio] { width: 14px; height: 14px; accent-color: #f9a800; cursor: pointer; }
+  .feedback-area { margin-top: 2px; }
+  .feedback-area label { font-size: 11px; color: #666; }
+  .feedback-area textarea { width: 100%; height: 30px; resize: none; border: 1px solid #d4c000; border-radius: 3px; background: rgba(255,255,255,0.7); font-family: 'Sarabun', sans-serif; font-size: 12px; padding: 2px 5px; outline: none; }
+  .footer { text-align: center; border-top: 2px solid #1a3a6e; padding-top: 3px; color: #1a3a6e; font-size: 10px; line-height: 1.5; }
+  .footer .thank-you { font-size: 13px; font-weight: 700; color: #1a3a6e; margin-bottom: 3px; }
+  .footer .company-name { font-size: 12px; font-weight: 700; color: #1a3a6e; }
+  .footer .contact { color: #444; font-size: 11px; }
+  .btn-add-row {
+    display: inline-block;
+    margin-bottom: 3px;
+    padding: 3px 12px;
+    background: #1a3a6e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .btn-add-row:hover { background: #122d57; }
 </style>
 </head>
 <body>
-
-<button class="btn-export" onclick="window.print()">&#11015; Export PDF / ดาวน์โหลด PDF</button>
-
+<button class="btn-export" onclick="exportPDF()">&#11015; Export PDF / ดาวน์โหลด PDF</button>
 <div class="page" id="page">
-  <!-- Header -->
   <div class="header">
     <div class="header-logo-wrap">
-      <div style="font-weight: bold; color: #1a3a6e;">KIMAC LOGO</div>
-      <div style="font-size: 10px;">ENGINEERING SERVICE</div>
-    </div>
-    <div class="header-center">
-      <h1>SERVICE REPORT / ใบแจ้งงานบริการ</h1>
-      <p>บริษัท คิแมค เอ็นจิเนียริ่ง จำกัด (สำนักงานใหญ่)</p>
-    </div>
-    <div class="header-right">
-      <div class="job-no-box">
-        <label>JOB NO.</label>
-        <input type="text" placeholder="KM2024-xxx">
-      </div>
-    </div>
-  </div>
-
-  <!-- Customer Info -->
-  <div class="section-title">ข้อมูลลูกค้า / CUSTOMER INFORMATION</div>
-  <div class="form-row">
-    <div class="field"><label>ชื่อลูกค้า:</label><input type="text"></div>
-    <div class="field"><label>วันที่:</label><input type="date"></div>
-  </div>
-  <div class="form-row">
-    <div class="field"><label>สถานที่ปฏิบัติงาน:</label><input type="text"></div>
-  </div>
-
-  <!-- Service Details -->
-  <div class="section-title">รายละเอียดการบริการ / SERVICE DETAILS</div>
-  <div class="form-row">
-    <div class="field">
-      <label>ประเภทงาน:</label>
-      <select>
-        <option>ตรวจเช็คประจำปี</option>
-        <option>ซ่อมบำรุงแก้ไข</option>
-        <option>ติดตั้งเครื่องใหม่</option>
-        <option>อื่นๆ</option>
-      </select>
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="field" style="width: 100%;">
-      <label>อาการที่แจ้ง/งานที่ดำเนินการ:</label>
-      <textarea style="width: 100%; height: 60px; border: 1px solid #ccc; border-radius: 4px; padding: 5px; font-family: 'Sarabun';"></textarea>
-    </div>
-  </div>
-
-  <!-- Parts Table -->
-  <div class="section-title">รายการอะไหล่และวัสดุ / PARTS & MATERIALS</div>
-  <div class="table-container">
-    <table class="parts-table">
-      <thead>
-        <tr>
-          <th width="50">ลำดับ</th>
-          <th>รายการ</th>
-          <th width="80">จำนวน</th>
-          <th width="120">หมายเหตุ</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td align="center">1</td>
-          <td><input type="text"></td>
-          <td><input type="number"></td>
-          <td><input type="text"></td>
-        </tr>
-        <tr>
-          <td align="center">2</td>
-          <td><input type="text"></td>
-          <td><input type="number"></td>
-          <td><input type="text"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Signatures -->
-  <div class="sig-section">
-    <div class="sig-box">
-      <div class="sig-title">ผู้รับบริการ (ลูกค้า)</div>
-      <div class="sig-preview-wrap"> (พื้นที่เซ็นชื่อ) </div>
-      <div class="field"><label>ชื่อ:</label><input type="text"></div>
-    </div>
-    <div class="sig-box">
-      <div class="sig-title">ผู้ให้บริการ (ช่าง)</div>
-      <div class="sig-preview-wrap"> (พื้นที่เซ็นชื่อ) </div>
-      <div class="field"><label>ชื่อ:</label><input type="text"></div>
-    </div>
-  </div>
-
-  <div style="margin-top: 30px; text-align: center; font-size: 11px; color: #777; border-top: 1px solid #eee; padding-top: 10px;">
-    KIMAC ENGINEERING CO., LTD. | Tel: 02-xxx-xxxx | www.kimac.co.th
-  </div>
-</div>
-
-</body>
-</html>
+      <img class="header-logo" src="data:image/jpeg;base64,/9j/4QC8RXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAAAwAAAAAQAAADAAAAABAAAABgAAkAcABAAAADAyMTABkQcABAAAAAECAwAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAQAAQAAAHULAAADoAQAAQAAAFMIAAAAAAAA/+EOzGh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8APD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyc+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczpBdHRyaWI9J2h0dHA6Ly9ucy5hdHRyaWJ1dGlvbi5jb20vYWRzLzEuMC8nPgogIDxBdHRyaWI6QWRzPgogICA8cmRmOlNlcT4KICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0nUmVzb3VyY2UnPgogICAgIDxBdHRyaWI6Q3JlYXRlZD4yMDI2LTA1LTEyPC9BdHRyaWI6Q3JlYXRlZD4KICAgICA8QXR0cmliOkRhdGE+eyZxdW90O2RvYyZxdW90OzomcXVvdDtEQUhKYmpuSXJGUSZxdW90OywmcXVvdDt1c2VyJnF1b3Q7OiZxdW90O1VBR25sdkVJVlFRJnF1b3Q7LCZxdW90O2JyYW5kJnF1b3Q7OiZxdW90O0JBR25sbnRNdWJ3JnF1b3Q7fTwvQXR0cmliOkRhdGE+CiAgICAgPEF0dHJpYjpFeHRJZD40MWM5YmY4Yi0wODNjLTQyMDItOTQyYy02NjYyOWYzODhhZTg8L0F0dHJpYjpFeHRJZD4KICAgICA8QXR0cmliOkZiSWQ+NTI1MjY1OTE0MTc5NTgwPC9BdHRyaWI6RmJJZD4KICAgICA8QXR0cmliOlRvdWNoVHlwZT4yPC9BdHRyaWI6VG91Y2hUeXBlPgogICAgPC9yZGY6bGk+CiAgIDwvcmRmOlNlcT4KICA8L0F0dHJpYjpBZHM+CiA8L3JkZjpEZXNjcmlwdGlvbj4KCiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0nJwogIHhtbG5zOmRjPSdodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyc+CiAgPGRjOnRpdGxlPgogICA8cmRmOkFsdD4KICAgIDxyZGY6bGkgeG1sOmxhbmc9J3gtZGVmYXVsdCc+VW50aXRsZWQgZGVzaWduIC0gMTwvcmRmOmxpPgogICA8L3JkZjpBbHQ+CiAgPC9kYzp0aXRsZT4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6cGRmPSdodHRwOi8vbnMuYWRvYmUuY29tL3BkZi8xLjMvJz4KICA8cGRmOkF1dGhvcj5QaGFudXBob25nIEJvb25zYXdhdDwvcGRmOkF1dGhvcj4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6eG1wPSdodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvJz4KICA8eG1wOkNyZWF0b3JUb29sPkNhbnZhIGRvYz1EQUhKYmpuSXJGUSB1c2VyPVVBR25sdkVJVlFRIGJyYW5kPUJBR25sbnRNdWJ3PC94bXA6Q3JlYXRvclRvb2w+CiA8L3JkZjpEZXNjcmlwdGlvbj4KPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKPD94cGFja2V0IGVuZD0ndyc/Pv/bAEMA///////////////////////////////////////////////////////////////////////////////////////bAEMA///////////////////////////////////////////////////////////////////////////////////////AABEICFMLdQMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/AJKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooppbFADqYW9KaTmkpFJBRRRQUFKOtJTl60AySiiimZhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABSE4pC2KYTmgaQpOabRRSLJR0FLSDpS0zMKKRQ6iiigQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUhOKaW9KbQNIUtmm0UUi7BRRRQAUUUUAFPWmVKOBQiZC0UUUyQooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACikLAUwkmgaVxxYCmEk0lFIpKwUUUUDCiiigAooooAKKKKAHAZNSU1RxTqZD3CiiigQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFとお待ちしております。
