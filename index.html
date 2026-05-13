@@ -595,17 +595,16 @@ async function exportPDF() {
     document.head.appendChild(s);
     await new Promise(r => s.onload = r);
   }
-  // Reset wrapper scaling for export so output is true A4 size
-  const wrapper = document.getElementById('pageWrapper');
-  const prevTransform = wrapper.style.transform;
-  const prevHeight = wrapper.style.height;
-  wrapper.style.transform = 'none';
-  wrapper.style.height = '';
 
+  // --- A4 sizing constants ---
+  // 210mm × 297mm at 96dpi = 793.7 × 1122.5 px. Round to 794 × 1123.
+  const A4_W_PX = 794;
+  const A4_H_PX = 1123;
+
+  // Hide on-screen-only controls
   document.querySelectorAll('.sig-trigger-btn').forEach(b => b.style.display = 'none');
   document.querySelectorAll('.btn-add-row').forEach(b => b.style.display = 'none');
   document.querySelectorAll('.btn-clear-sig').forEach(b => b.style.display = 'none');
-
   ['tech','cust'].forEach(t => {
     const img = document.getElementById(t + 'SigImg');
     if (img && img.src && img.src !== window.location.href) {
@@ -613,22 +612,88 @@ async function exportPDF() {
     }
   });
 
-  html2pdf().set({
-    margin: 0,
-    filename: 'SERVICE_SHEET_KIMAC.pdf',
-    image: { type: 'jpeg', quality: 0.95 },
-    html2canvas: { scale: 2, useCORS: true, letterRendering: true, windowWidth: 794 },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    pagebreak: { mode: 'avoid-all' }
-  }).from(document.getElementById('page')).save().then(() => {
-    // Restore signature buttons / clear buttons as they were
+  // Reset visual scaling on the live wrapper (we'll restore it after)
+  const wrapper = document.getElementById('pageWrapper');
+  const prevTransform = wrapper.style.transform;
+  const prevHeight = wrapper.style.height;
+  const prevExportBtnDisplay = document.querySelector('.btn-export').style.display;
+  wrapper.style.transform = 'none';
+  wrapper.style.height = '';
+  document.querySelector('.btn-export').style.display = 'none';
+
+  // --- Clone the page into a hidden container with FIXED A4 pixel size ---
+  // This makes html2canvas render at A4 regardless of the viewport (mobile/desktop).
+  const original = document.getElementById('page');
+  const clone = original.cloneNode(true);
+  clone.id = 'pageClone';
+  // Force exact A4 pixel size on the clone
+  clone.style.width = A4_W_PX + 'px';
+  clone.style.minHeight = A4_H_PX + 'px';
+  clone.style.boxShadow = 'none';
+  clone.style.margin = '0';
+  clone.style.transform = 'none';
+
+  // Off-screen container at exact A4 width so layout reflows for A4
+  const exportHost = document.createElement('div');
+  exportHost.id = 'pdfExportHost';
+  exportHost.style.position = 'fixed';
+  exportHost.style.left = '-10000px';
+  exportHost.style.top = '0';
+  exportHost.style.width = A4_W_PX + 'px';
+  exportHost.style.background = '#ffffff';
+  exportHost.style.zIndex = '-1';
+  exportHost.appendChild(clone);
+  document.body.appendChild(exportHost);
+
+  // Mirror input/textarea/select values from original into clone
+  // (cloneNode doesn't copy live form state for inputs)
+  function syncFormValues(src, dst) {
+    const srcEls = src.querySelectorAll('input, textarea, select');
+    const dstEls = dst.querySelectorAll('input, textarea, select');
+    srcEls.forEach((el, i) => {
+      const d = dstEls[i];
+      if (!d) return;
+      if (el.tagName === 'SELECT') {
+        d.value = el.value;
+      } else if (el.type === 'checkbox' || el.type === 'radio') {
+        d.checked = el.checked;
+        if (el.checked) d.setAttribute('checked', 'checked');
+        else d.removeAttribute('checked');
+      } else {
+        d.value = el.value;
+        d.setAttribute('value', el.value);
+      }
+    });
+  }
+  syncFormValues(original, clone);
+
+  // Mirror signature images (src) into clone
+  ['tech','cust'].forEach(t => {
+    const srcImg = original.querySelector('#' + t + 'SigImg');
+    const dstImg = clone.querySelector('#' + t + 'SigImg');
+    if (srcImg && dstImg && srcImg.src && srcImg.style.display !== 'none') {
+      dstImg.src = srcImg.src;
+      dstImg.style.display = 'block';
+    }
+    // Hide trigger and clear button in the clone
+    const btn = clone.querySelector('#' + t + 'SigBtn');
+    if (btn) btn.style.display = 'none';
+    const clearBtn = clone.querySelector('#' + t + 'ClearBtn');
+    if (clearBtn) clearBtn.style.display = 'none';
+  });
+  // Hide add-row button in the clone too
+  clone.querySelectorAll('.btn-add-row').forEach(b => b.style.display = 'none');
+
+  function cleanup() {
+    // Remove hidden export host
+    if (exportHost.parentNode) exportHost.parentNode.removeChild(exportHost);
+    // Restore on-screen controls
     document.querySelectorAll('.sig-trigger-btn').forEach(b => {
       const t = b.id.replace('SigBtn','');
       const img = document.getElementById(t + 'SigImg');
       if (!img.src || img.style.display === 'none') b.style.display = 'flex';
     });
     document.querySelectorAll('.btn-add-row').forEach(b => b.style.display = 'inline-block');
-    // Show clear buttons only where a signature still exists
     ['tech','cust'].forEach(t => {
       const img = document.getElementById(t + 'SigImg');
       const clearBtn = document.getElementById(t + 'ClearBtn');
@@ -639,11 +704,47 @@ async function exportPDF() {
         clearBtn.classList.remove('show');
       }
     });
-    // Restore visual scaling
     wrapper.style.transform = prevTransform;
     wrapper.style.height = prevHeight;
+    document.querySelector('.btn-export').style.display = prevExportBtnDisplay;
     scalePage();
-  });
+  }
+
+  try {
+    await html2pdf().set({
+      margin: 0,
+      filename: 'SERVICE_SHEET_KIMAC.pdf',
+      image: { type: 'jpeg', quality: 0.95 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        letterRendering: true,
+        // Force the rendering viewport to A4 pixel width, NOT the device viewport.
+        // This is what fixes the mobile-export-zoomed problem.
+        width: A4_W_PX,
+        height: A4_H_PX,
+        windowWidth: A4_W_PX,
+        windowHeight: A4_H_PX,
+        x: 0,
+        y: 0,
+        scrollX: 0,
+        scrollY: 0,
+        backgroundColor: '#ffffff'
+      },
+      jsPDF: {
+        unit: 'mm',
+        format: 'a4',
+        orientation: 'portrait',
+        compress: true
+      },
+      pagebreak: { mode: ['avoid-all'] }
+    }).from(clone).save();
+  } catch (err) {
+    console.error('PDF export error:', err);
+    alert('เกิดข้อผิดพลาดในการสร้าง PDF กรุณาลองอีกครั้ง');
+  } finally {
+    cleanup();
+  }
 }
 </script>
 </body>
